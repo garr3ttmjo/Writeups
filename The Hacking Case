@@ -18,15 +18,15 @@ To examine this case I will be using Autopsy, EZ-Tools by Eric Zimmerman, and so
 Questions
 1. What is the image hash? Does the acquisition and verification hash match?
 	First action in an investigation should be to ensure you haven't altered or corrupted your image in any way so you know data integrity remains. The way to do this is by matching the hashes of the files. Below shows a html report from the acquisition of the images containing MD5 hashes.
-	
+	![1](https://github.com/garr3ttmjo/Writeups/assets/108881417/56c918f1-5456-4ff1-8d16-053d6e8a76f0)
 	
 	We can then use the certUtil -hashfile function to hash the images in our environment to make sure they are the same.
 	
+	![2](https://github.com/garr3ttmjo/Writeups/assets/108881417/cfe5e730-3c83-4eb2-a8fd-bcc7531f097f)
 	
-
 	Autopsy also will take a hash of the data source image but it is processing the E01 and E02 files together so its hash will be different. You can view this by right clicking on your data source then selecting view summary information and going to the container tab.
 	
-	
+	![3 pmg](https://github.com/garr3ttmjo/Writeups/assets/108881417/4748cd86-caf4-4ef7-a865-73eb0acc44bd)
 	
 	
 2. What operating system was used on the computer?
