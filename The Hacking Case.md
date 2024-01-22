@@ -101,7 +101,9 @@ To examine this case I will be using Autopsy, EZ-Tools by Eric Zimmerman, and so
 	![image](https://github.com/garr3ttmjo/Writeups/assets/108881417/0a06016a-b252-4265-ae5e-fbc42ce895b3)
 
 11. What is the account name of the user who mostly uses the computer?
-	To do analysis on user activity we are going to move to user specific artifacts of the UsrClass.dat and NTUSER.dat files which provide user account specific information. Good places to see activity within these files are Shellbags and MRUs. Shellbags are how Window stores a users window viewing preferences through Windows Explorer but also happens to be a good forensic artifact for recently visited locations. RecentDocs MRU gives us a view of some of the Most Recently Used (MRU) files and folders visited by the user. RecentDocs MRU is found at NTUSER.dat\Software\Microsoft\Windows\CurrentVersion\Explorer\RecentDocs and Shellbags can be found at NTUSER.DAT\Software\Microsoft\Windows\Shell\Bags but is hard to parse in registry explorer so better way is to analyze using EZ-Tools Shell Bag Explorer. If you explore the users NTUSER.dat hives you will see that Mr. Evil is the account with the most activity.
+	To do analysis on user activity we are going to move to user specific artifacts of the UsrClass.dat and NTUSER.dat files which provide user account specific information. Good places to see activity within these files are Shellbags and MRUs. Shellbags are how Window stores a users window viewing preferences through Windows Explorer but also happens to be a good forensic artifact for recently visited locations. RecentDocs MRU gives us a view of some of the Most Recently Used (MRU) files and folders visited by the user.
+
+RecentDocs MRU is found at NTUSER.dat\Software\Microsoft\Windows\CurrentVersion\Explorer\RecentDocs and Shellbags can be found at NTUSER.DAT\Software\Microsoft\Windows\Shell\Bags but it is hard to parse in registry explorer so better way is to analyze using EZ-Tools Shell Bag Explorer. If you explore the users NTUSER.dat hives you will see that Mr. Evil is the account with the most activity.
 	
 	Mr. Evil RecentDocs
 	
