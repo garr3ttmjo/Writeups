@@ -18,6 +18,7 @@ To examine this case I will be using Autopsy, EZ-Tools by Eric Zimmerman, and so
 #Questions
 1. What is the image hash? Does the acquisition and verification hash match?
 	First action in an investigation should be to ensure you haven't altered or corrupted your image in any way so you know data integrity remains. The way to do this is by matching the hashes of the files. Below shows a html report from the acquisition of the images containing MD5 hashes.
+
 	![1](https://github.com/garr3ttmjo/Writeups/assets/108881417/56c918f1-5456-4ff1-8d16-053d6e8a76f0)
 	
 	We can then use the certUtil -hashfile function to hash the images in our environment to make sure they are the same.
@@ -29,7 +30,7 @@ To examine this case I will be using Autopsy, EZ-Tools by Eric Zimmerman, and so
 	![3 pmg](https://github.com/garr3ttmjo/Writeups/assets/108881417/4748cd86-caf4-4ef7-a865-73eb0acc44bd)
 	
 	
-2. What operating system was used on the computer?
+3. What operating system was used on the computer?
 	This is information Autopsy will pull for you when you the default modules and you can view it under the Data Artifacts/Operating System tab.
 	![image](https://github.com/garr3ttmjo/Writeups/assets/108881417/4f30f75a-02cf-43ab-bbfd-24b973e4830c)
 
@@ -40,7 +41,7 @@ To examine this case I will be using Autopsy, EZ-Tools by Eric Zimmerman, and so
 
 	The answer to our question is under ProductName which tells us the operating system is Microsoft Windows XP.
 
-3. When was the install date?
+4. When was the install date?
 	The operating system install date is under the same registry key Microsoft\Windows NT\CurrentVersion but as you can see in the InstallDate entry 1092955707 is not data we can get any value from. Lots of data isn't stored in Ascii or readable text to us so we have to right click on the data entry and select data interpreter to figure out what the actual date time is in something we can read. This displays a few different options so you may need to google to figure out which of the dates applies to this value. 
 	![image](https://github.com/garr3ttmjo/Writeups/assets/108881417/cd1f689a-bce3-4675-9dbc-c508e3ec26a5)
 
@@ -48,7 +49,7 @@ To examine this case I will be using Autopsy, EZ-Tools by Eric Zimmerman, and so
 
 	So our install date is 2004-08-19 22:48:27.
 	
-4. What is the timezone settings?
+5. What is the timezone settings?
 	This is another piece of information we will find in the registry but instead under the system hive. This registry key is system\ControlSet001\Control\TimeZoneInformation. 
 	
 	![image](https://github.com/garr3ttmjo/Writeups/assets/108881417/2c40d895-b23d-4f52-b147-17310cdd0bf0)
@@ -56,7 +57,7 @@ To examine this case I will be using Autopsy, EZ-Tools by Eric Zimmerman, and so
 
 	Here we can see the system timezone is Central Standard Time.
 	
-5. Who is the registered owner?
+6. Who is the registered owner?
 	Registered owner is under the CurrentVersion information along with the operating system info.
 	
 	![image](https://github.com/garr3ttmjo/Writeups/assets/108881417/a699e77f-0896-4f93-b148-d65ad17e087b)
@@ -64,7 +65,7 @@ To examine this case I will be using Autopsy, EZ-Tools by Eric Zimmerman, and so
 	
 	Under RegisteredOwner we can see a name, Greg Schardt.
 	
-6. What is the computer account name?
+7. What is the computer account name?
 	Computer account name is found under registry key System\ControlSet001\Control\ComputerName\ComputerName.
 
 	![image](https://github.com/garr3ttmjo/Writeups/assets/108881417/42158569-6f17-4b7b-8456-68fff13803da)
@@ -145,6 +146,8 @@ To examine this case I will be using Autopsy, EZ-Tools by Eric Zimmerman, and so
 	
  	![image](https://github.com/garr3ttmjo/Writeups/assets/108881417/4da4ea6d-b6f2-4edc-a621-43fc7b8d61d5)
 
+   	____________________________________________________________________________________________________
+
 	![image](https://github.com/garr3ttmjo/Writeups/assets/108881417/8e383028-6d3d-4ef1-aeca-01bb73755b18)
 
 16. This same file reports the IP address and MAC address of the computer. What are they?
@@ -165,14 +168,20 @@ To examine this case I will be using Autopsy, EZ-Tools by Eric Zimmerman, and so
  	![image](https://github.com/garr3ttmjo/Writeups/assets/108881417/bab90f7f-b56f-4b42-b542-f7fd86ccbbdb)
 
 	• Anonymizer - An anonymizer or an anonymous proxy is a tool that attempts to make activity on the Internet untraceable. It is a proxy server computer that acts as an intermediary and privacy shield between a client computer and the rest of the Internet.
+
 	• Cain and Abel - a password recovery tool for Microsoft Windows. It could recover many kinds of passwords using methods such as network packet sniffing, cracking various password hashes by using methods
+
 	• Ethereal - this is the predecessor to Wireshark which is a free and open-source packet analyzer that can be used for network sniffing.
+
 	• Network Stumbler - tool for Windows that facilitates detection of Wireless LANs using the 802.11b, 802.11a and 802.11g WLAN standards.
+
 	• WinPcap - For many years, WinPcap has been recognized as the industry-standard tool for link-layer network access in Windows environments, allowing applications to capture and transmit network packets bypassing the protocol stack, and including kernel-level packet filtering, a network statistics engine and support for remote packet capture.
+
 	• Whois - Whois performs the registration record for the domain name or IP address that you specify.
+
 	• 123WASP - 123 Write All Stored Passwords (WASP) will display all passwords of the currently logged on user that are stored in the Microsoft PWL file.
 
-19. What is the SMTP email address for Mr. Evil?
+20. What is the SMTP email address for Mr. Evil?
 	During my research on the programs in the Program Files folder I saw that Agent was referring to some kind of mail agent so that sounds like a good place to start. Going through the files nothing stands out until the Data folder where you start to see "Mr Evil <whoknowsme@sbcglobal.net>" in some if the IDX files. This is suspicious but lets keep looking. Keep going down the list and you will end up at the AGENT.INI file which specifies configurations for the program. Here we find the exact info we were looking for.
 	
 	![image](https://github.com/garr3ttmjo/Writeups/assets/108881417/962691b7-75b8-4171-b20b-b1ae00d67e8e)
@@ -185,12 +194,12 @@ To examine this case I will be using Autopsy, EZ-Tools by Eric Zimmerman, and so
 	
 	![image](https://github.com/garr3ttmjo/Writeups/assets/108881417/ac34d1a7-75d0-48d0-a4eb-82f95a8945ee)
 
-20. What are the NNTP (news server) settings for Mr. Evil?
+21. What are the NNTP (news server) settings for Mr. Evil?
 	I found this server news.dallas.sbcglobal.net doing a string search for "news" in registry explorer. This searching for it in Autopsy brought me back to the AGENT.INI file.
 
  	![image](https://github.com/garr3ttmjo/Writeups/assets/108881417/8e637810-54de-4fb6-b75d-42039d20305f)
 
-21. What two installed programs show this information?
+22. What two installed programs show this information?
 	The first progam is the one we have been looking at AGENT which after more research is short for Forte Agent (Forté Agent is an email and Usenet news client used on the Windows operating system.)
 	
 	The string search for "news" on registry explorer within Mr. Evil's NTUSER.DAT file brings up Outlook Express as a news software.
@@ -198,7 +207,7 @@ To examine this case I will be using Autopsy, EZ-Tools by Eric Zimmerman, and so
 	![image](https://github.com/garr3ttmjo/Writeups/assets/108881417/0b72aa00-e795-4cf5-90a8-1af22e32c99e)
 
 	But I have not be able to find any reference to the new.dallas.sbcglobal.net server in any of the Outlook Express file it does have a NNTP registry key at \Microsoft\Outlook Express\Outlook NewsReader\Protocols\nntp meaning this program does use nntp.
-22. List 5 newsgroups that Mr. Evil has subscribed to?
+23. List 5 newsgroups that Mr. Evil has subscribed to?
 	Trying to find more information on the news server I decided to do a substring match instead of a keyword search to see if that brought up any different results. Along with the 4 results that came up earlier now it found a lot of dbx files. Looking up .dbx extension tells you it’s a type of email file and scrolling through the text you will see these are news emails that the user subscribed to.
 	
 	![image](https://github.com/garr3ttmjo/Writeups/assets/108881417/c3a170a0-e2f1-40f0-99c0-8b401f7d3090)
@@ -209,7 +218,7 @@ To examine this case I will be using Autopsy, EZ-Tools by Eric Zimmerman, and so
 		○ Alt.2600.crackz
 		○ Alt.binaries.hacking.beginner
 		○ Alt.binaries.hacking.computers
-23. A popular IRC (Internet Relay Chat) program called MIRC was installed.  What are the user settings that was shown when the user was online and in a chat channel?
+24. A popular IRC (Internet Relay Chat) program called MIRC was installed.  What are the user settings that was shown when the user was online and in a chat channel?
 	Going into the mIRC program folder and looking at the files we see a mirc.ini file which likely has the setting for the program. Here we find a user, email, and nickname.
 	
 	![image](https://github.com/garr3ttmjo/Writeups/assets/108881417/820419e7-6c5a-48c9-bc65-ddb1c6d3cf07)
@@ -218,17 +227,17 @@ To examine this case I will be using Autopsy, EZ-Tools by Eric Zimmerman, and so
 	
 	![image](https://github.com/garr3ttmjo/Writeups/assets/108881417/d1992045-6dc0-4732-84a7-a9616696e12c)
 
-24. This IRC program has the capability to log chat sessions. List 3 IRC channels that the user of this computer accessed.
+25. This IRC program has the capability to log chat sessions. List 3 IRC channels that the user of this computer accessed.
 	These are the chat rooms found in the logs folder.
 
  	![image](https://github.com/garr3ttmjo/Writeups/assets/108881417/31f08785-11f7-41b5-bf71-0f93719ec7bd)
 
-25. Ethereal, a popular “sniffing” program that can be used to intercept wired and wireless internet packets was also found to be installed. When TCP packets are collected and re-assembled, the default save directory is that users \My Documents directory. What is the name of the file that contains the intercepted data?
+26. Ethereal, a popular “sniffing” program that can be used to intercept wired and wireless internet packets was also found to be installed. When TCP packets are collected and re-assembled, the default save directory is that users \My Documents directory. What is the name of the file that contains the intercepted data?
 	This default save directory hint is misleading because if you check Mr. Evil's My Document folder there is nothing there but if you go back to the Mr. Evil folder you will find a file called "interception". When you check the metadata of the file you will see it’s a .pcap extension or packet capture and is the normal output of a network sniffer.
 
  	![image](https://github.com/garr3ttmjo/Writeups/assets/108881417/2b967b63-1def-4854-b43a-62ff9d2d0326)
 
-26. Viewing the file in a text format reveals much information about who and what was intercepted. What type of wireless computer was the victim (person who had his internet surfing recorded) using?
+27. Viewing the file in a text format reveals much information about who and what was intercepted. What type of wireless computer was the victim (person who had his internet surfing recorded) using?
 	Viewing the text of the file will reveal the answer right away. UA stands for User Agent and OS is operating system. This reveals the UA computer to be a Windows CE (Pocket PC).
 	
 	![image](https://github.com/garr3ttmjo/Writeups/assets/108881417/66967280-4d2a-4ce7-a649-50cea2e36121)
@@ -239,17 +248,17 @@ To examine this case I will be using Autopsy, EZ-Tools by Eric Zimmerman, and so
 
 	https://phonedb.net/index.php?m=device&id=77&c=psion_teklogix_netbook_pro&d=image
 	
-27. What websites was the victim accessing?
+28. What websites was the victim accessing?
 	Continue scrolling through the file and you see the UA is using Firefox reach out to a host at mobile.msn.com to get to MSN Hotmail.
 	
 	![image](https://github.com/garr3ttmjo/Writeups/assets/108881417/7ade4f65-5146-45e5-b65d-7d05ebb90b5e)
 
-28. Search for the main users web based email address. What is it?
+29. Search for the main users web based email address. What is it?
 	This question asks for a web based email address so its not going to be one of the local agents we had looked at earlier. A good place to start are the web artifacts Autopsy collects for you including the Web Bookmarks, Web Cookies, Web History, and Web Search. Bookmarks and web search don't seem to have anything and cookies has some things that stick out like mr. evil@yahoo.txt but that isn't an email address. That leaves web history contained in the index.dat files. Scrolling through and looking at the domains yahoo is the one that really sticks out to me but its still hard to manually look through all the text. So I do a substring search for "@yahoo.com" and then sort by name to find the index.dat files and there are only 2 with @yahoo addresses.
 	
 	![image](https://github.com/garr3ttmjo/Writeups/assets/108881417/1b883db8-921b-411c-8be3-cc0bc4525ae3)
 
-29. Yahoo mail, a popular web based email service, saves copies of the email under what file name?
+30. Yahoo mail, a popular web based email service, saves copies of the email under what file name?
 	Now that we have his yahoo email we can assume any saved emails will have his address in them so we can do a substring search for it and look through the results.
 
 	![image](https://github.com/garr3ttmjo/Writeups/assets/108881417/029b1933-89dc-44d3-a3aa-07ce7f961098)
