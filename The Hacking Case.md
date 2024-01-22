@@ -144,11 +144,7 @@ To examine this case I will be using Autopsy, EZ-Tools by Eric Zimmerman, and so
 15.  List the network cards used by this computer
 	This can be found under the software\Microsoft\Windows NT\CurrentVersion\NetworkCards key and we see two entries.
 	
- 	![image](https://github.com/garr3ttmjo/Writeups/assets/108881417/4da4ea6d-b6f2-4edc-a621-43fc7b8d61d5)
-
-   	____________________________________________________________________________________________________
-
-	![image](https://github.com/garr3ttmjo/Writeups/assets/108881417/8e383028-6d3d-4ef1-aeca-01bb73755b18)
+	
 
 16. This same file reports the IP address and MAC address of the computer. What are they?
 	This questions sounds like we were supposed to find this information another way so lets look around the Look@Lan program we found earlier because that is network related. Back in the irunin.ini we find this.
