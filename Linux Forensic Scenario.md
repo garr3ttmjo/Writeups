@@ -15,21 +15,36 @@ On May 3, 2007, the Federal Police, in an operation against the distribution of 
 
 ## Investigation and Questions
 
+
+
+
 #### What’s the name of a hidden folder? and where is it? Is it a suspicious folder? How many files did you find inside this folder?
 To look for a hidden folder I am going to navigate to the home/ubuntuforensics folder and run "ls -ld .?*" to find all hidden items in the directory.
 This brings up the normal hidden folders but some new ones as well. The one that sticks out the most is ".for sales_copy" directory. We can cd into
 this to view the contents. I see these are pistachio pictures and will now run "ls -1 | wc -l" to count the number of files in the directory. The count is 833.
 
 #### Write the name of suspicious files you’ve found and the path where they are located! Hint: Do not forget that a skilled professional would look anywhere and any kind of file such as audios,text files,videos, etc.Here will be considered as suspicious files just .txt files.
-
+	This involves exploring the system to find files that contain information important to the base.
+	
+	* /home/ubuntuforensics/Documents/clients/clients_email
+	* /home/ubuntuforensics/Documents/byName/for_clients.txt
+	
+	These provide information on clients potentially involved in bad activities.
 
 
 #### How many deleted images were you able to recover? Both images that are in the recycle bin and images deleted from the recycle bin (Just pistaches pictures are considered as suspicious).
 
 #### Did you find any suspicious “zip” file which can be a possible proof? What is or are the name of these files and the password ?
+	There are various zip files but two stick out because FTK Imager doesn't allow me to see the images inside which likely means they are password protected.
+	The zip files are _.zip and #.zip located in the /Downloads/Images directory. I'll extract them and then run 7z from the command line with the password I found
+	from cracking the Private.key in the question below but you could do the same process but with zip2john or fcrackzip. Here I have the password so can run 7z like "7z -p"root" e \#.zip"
+	and get the pistachio images.
 
 #### Were you able to identify any kind of steganography? If yes, what kind of information did you extract from the suspicious file? How many files could you find that were applied steganography? And how are they called?
-
+	Just triaging around the system I came across the Documents/special client directory where the images didn't seem to match up with the others I'd seen. 
+	So I extracted all of the images to a separate folder and ran this bash line to loop through the images and see if anything could be extracted using the password we have found "root". 
+	The code is "for image in *.jpg; do steghide extract -sf "$image" -p root && echo "File found in: $image" || echo "No file found in: $image"; done" and Steghide extracts 5 pistachio images from the unsplash jpgs.
+	
 #### There are browsers  installed so maybe the criminal used it as  a tool to do some kind of illicit search on the Internet. Could you find any kind of url or anything related to suspicious searches? Here we considered as suspicious searches every website that contains the following string: F0r3ns1cs
 I found evidence of two browsers on the system, Firefox and Tor. Tor is used for its anonymity so it is unlikely we will find useful information there but still worth a try.
 For both browsers I will locate the places.sqlite files which can be found under a profile in each browser directory. Then you can use a tool like DB Browser for SQLite to view the database files.
@@ -37,7 +52,7 @@ Within the database the table we want to view is the moz_places table. Tor's moz
 did reveal the information we were looking for. There is a google search for for3ns1cs and f0r3ns1cs and then a visit to the url https://compactor.bandcamp.com/album/d1g1tal-f0r3ns1cs. This is the
 suspicious search history we wanted. There were also searches for police departments and computer crime which is also suspicious in a child exploitation case.
 
-#### The police have a database of file hashes that have already been seized, whether from illegal sites or illegally distributed content, so if they find a match to those hash it means that those files were found on sites that practiced criminal/illegal activities.So your goal is to find the files that have the following hashes (SHA1 hash function):
+##### The police have a database of file hashes that have already been seized, whether from illegal sites or illegally distributed content, so if they find a match to those hash it means that those files were found on sites that practiced criminal/illegal activities.So your goal is to find the files that have the following hashes (SHA1 hash function):
 
 * f1010ce85f3bac86c564403f454db46332f2937e  
 * a9ce3a402bd06756afa6caa6cd985381cf544ed7  
