@@ -8,7 +8,7 @@ Challenge created by Jean Carlos Martins Miguel and can be found at:
  * https://cfreds.nist.gov/all/utfpr/LinuxForensicsScenario
  * https://drive.google.com/drive/folders/1_C-YorlEjuiCF6dBPmKhLd2Z7l43Q9YN
 
-**Skills:** Linux Disk Forensics, Steganography, Decryption
+**Concepts:** Linux Disk Forensics, Steganography, Decryption
 
 ## Scenario
 On May 3, 2007, the Federal Police, in an operation against the distribution of child pornography seized a computer in a residence on Zero street in São Paulo. The computer was seized and the computer owner confessed to the police that he has illicit files related to sexual abuse and exploitation and that he sells this content. So, you were hired to work with the police as a Forensics Analyst, now you have to help them to find as much evidence as you can that will be used as proof  in court to send the criminal to jail.
