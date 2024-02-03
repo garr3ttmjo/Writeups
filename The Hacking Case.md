@@ -8,6 +8,8 @@ Challenge provided by NIST at https://cfreds.nist.gov/all/NIST/HackingCase.
 
 Questions can be found at https://cfreds-archive.nist.gov/Hacking_Case.html.
 
+**Concepts:** Windows Disk Forensics, Registry Analysis, Autopsy, EZ-Tools
+
 # Scenario
 On 09/20/04 , a Dell CPi notebook computer, serial # VLQLW, was found abandoned along with a wireless PCMCIA card and an external homemade 802.11b antennae. It is suspected that this computer was used for hacking purposes, 
 although cannot be tied to a hacking suspect, G=r=e=g S=c=h=a=r=d=t. (The equal signs are just to prevent web crawlers from indexing this name; there are no equal signs in the image files.)  
