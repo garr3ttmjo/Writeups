@@ -96,7 +96,7 @@ And you can see that the DomainName is the same as our computer name from the pr
 	
 #### 8. When was the last recorded computer shutdown date/time?
 
-The last shutdown can be found under System\ControlSet001\Control\Windows\ShutdownTime key. But for some reason I am not able to find anything in this location under either control set. So I am going to try another registry tool called RegRipper and run it against the system hive using the shutdown plugin.
+The last shutdown can be found under System\ControlSet001\Control\Windows\ShutdownTime key. I am going to use a registry tool called RegRipper and run it against the system hive using the shutdown plugin.
 	
 ![image](https://github.com/garr3ttmjo/Writeups/assets/108881417/b78c7615-4723-4c2b-86ee-8e2524d1f158)
 
