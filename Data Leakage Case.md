@@ -203,8 +203,154 @@ ControlSet001\Control\Windows key, ShutdownTime value
 LastWrite time: 2015-03-25 15:31:05Z
 ShutdownTime  : 2015-03-25 15:31:05Z
 ```
-15. Explain the information of network interface(s) with an IP address assigned by DHCP.
-1. What applications were installed by the suspect after installing OS?
+#### 10. Explain the information of network interface(s) with an IP address assigned by DHCP.
+The SOFTWARE\Microsoft\Windows NT\CurrentVersion\NetworkCards\ key shows the Network Interface Cards for the system but on this system there is just one.
+
+![image](https://github.com/garr3ttmjo/Writeups/assets/108881417/bbfd32f3-c7ff-43c7-ac99-5655797bbe8a)
+
+Then we can look at the ControlSet001\Services\Tcpip\Parameters\Interfaces key and match the adapter id {E2B9AEEC-B1F7-4778-A049-50D7F2DAB2DE} to get the DHCP information.
+```
+rip.exe -r "D:\Cases\NIST\Data Leakage Case\Kape Triage\G\Windows\System32\config\SYSTEM" -p nic2
+Launching nic2 v.20200525
+nic2 v.20200525
+(System) Gets NIC info from System hive
+
+Adapter: {846ee342-7039-11de-9d20-806e6f6e6963}
+LastWrite Time: 2015-03-25 10:33:18Z
+
+ControlSet001\Services\Tcpip\Parameters\Interfaces has no subkeys.
+Adapter: {E2B9AEEC-B1F7-4778-A049-50D7F2DAB2DE}
+LastWrite Time: 2015-03-25 15:24:51Z
+  DhcpIPAddress                10.11.11.129
+  DhcpSubnetMask               255.255.255.0
+  DhcpServer                   10.11.11.254
+  Lease                        1800
+  LeaseObtainedTime            2015-03-25 15:19:50Z
+  T1                           2015-03-25 15:34:50Z
+  T2                           2015-03-25 15:46:05Z
+  LeaseTerminatesTime          2015-03-25 15:49:50Z
+  DhcpGatewayHardwareCount     1
+  DhcpNameServer               10.11.11.2
+  DhcpDefaultGateway           10.11.11.2
+  DhcpDomain                   localdomain
+  DhcpSubnetMaskOpt            255.255.255.0
+```
+From these two keys we can see we have a Intel(R) PRO/1000 MT Network Connection NIC with a DhcpIPAddress of 10.11.11.129.
+
+#### 11. What applications were installed by the suspect after installing OS?
+There are a few ways to find the answer to this question. Something I like to do is a quick scan to see what files have a Zone.Identifier of 3 which means they were downloaded from the internet. Here you can see I find 6 .exe files that were downloaded.
+```
+fls -r -o 206848 cfreds_2015_data_leakage_pc.dd | rg  "Zone.Identifier"
+
+++++ r/r 62436-128-4:   IE11-Windows6.1-x64-en-us.exe:Zone.Identifier
+++++ -/r * 75101-128-5: Eraser 6.2.0.2962.exe:Zone.Identifier
+++++ -/r * 75186-128-5: ccsetup504.exe:Zone.Identifier
++++ r/r 72145-128-8:    googledrivesync.exe:Zone.Identifier
++++ r/r 72096-128-8:    icloudsetup.exe:Zone.Identifier
+++ -/r * 74418-128-4:   $RJEMT64.exe:Zone.Identifier
+-----------------------------------------------------------------------------------------
+/Users/informant/Desktop/Download/IE11-Windows6.1-x64-en-us.exe - Internet Explorer 11
+/Users/informant/Desktop/Download/Eraser 6.2.0.2962.exe - Eraser
+/Users/informant/Desktop/Download/ccsetup504.exe - CCleaner
+/Users/informant/Downloads/googledrivesync.exe - Google Drive
+/Users/informant/Downloads/icloudsetup.exe - iCloud
+$RJEMT64.exe - The $R shows this is a "deleted" file in the recycle bin which should have a corresponding $I file containing metadata on the file like its name and path.
+If you are not sure where this file is coming from you can use the ffind command to give you the file path from the inode which is how I found the paths of all the .exe above.
+
+ffind -a -o 206848 cfreds_2015_data_leakage_pc.dd 74418-128-1
+/$Recycle.Bin/S-1-5-21-2425377081-3129163575-2985601102-1000/$RJEMT64.exe
+
+Using the TSK command icat I can parse out the contents of the corresponding $I file, $IJEMT64.exe.
+icat -o 206848 cfreds_2015_data_leakage_pc.dd 74761-128-1
+C:\Users\informant\AppData\Local\Microsoft\Windows\Burn\Burn\IE11-Windows6.1-x64-en-us.exe
+```
+This shows that Internet Explorer was moved to this Burn path and then later deleted. The AppData\Local\Microsoft\Windows\Burn\Burn\ folder is assocaited with the Windows Disc Burning utility so as part of a data exfiltration case we will want to look more into this.
+
+Another way to check for installed programs is to check the Uninstall key in both SOFTWARE and NTUSER.DAT hives.
+```
+rip.exe -r "D:\Cases\NIST\Data Leakage Case\Kape Triage\G\Windows\System32\config\SOFTWARE" -p uninstall
+Launching uninstall v.20200525
+uninstall v.20200525
+(Software, NTUSER.DAT) Gets contents of Uninstall keys from Software, NTUSER.DAT hives
+
+Uninstall
+Microsoft\Windows\CurrentVersion\Uninstall
+2015-03-25 14:57:31Z
+  Eraser 6.2.0.2962 v.6.2.2962
+2015-03-25 14:54:33Z
+  Microsoft .NET Framework 4 Extended v.4.0.30319
+2015-03-25 14:54:06Z
+  Microsoft .NET Framework 4 Extended v.4.0.30319
+2015-03-25 14:52:06Z
+  Microsoft .NET Framework 4 Client Profile v.4.0.30319
+2015-03-25 14:51:39Z
+  Microsoft .NET Framework 4 Client Profile v.4.0.30319
+2015-03-25 10:15:21Z
+  DXM_Runtime
+  MPlayer2
+2015-03-23 20:00:58Z
+  Bonjour v.3.0.0.10
+2015-03-22 15:04:14Z
+  Microsoft Office Professional Plus 2013 v.15.0.4420.1017
+2015-03-22 15:03:33Z
+  Microsoft Office Professional Plus 2013 v.15.0.4420.1017
+2015-03-22 15:01:46Z
+  Microsoft Office 32-bit Components 2013 v.15.0.4420.1017
+2015-03-22 15:01:38Z
+  Microsoft Word MUI (English) 2013 v.15.0.4420.1017
+2015-03-22 15:01:37Z
+  Microsoft Outlook MUI (English) 2013 v.15.0.4420.1017
+2015-03-22 15:01:34Z
+  Microsoft Office OSM MUI (English) 2013 v.15.0.4420.1017
+  Microsoft Office OSM UX MUI (English) 2013 v.15.0.4420.1017
+2015-03-22 15:01:32Z
+  Microsoft Office Proofing (English) 2013 v.15.0.4420.1017
+2015-03-22 15:01:31Z
+  Microsoft Office Proofing Tools 2013 - English v.15.0.4420.1017
+2015-03-22 15:01:30Z
+  Outils de v├⌐rification linguistique 2013 de Microsoft Office┬á- Fran├ºais v.15.0.4420.1017
+2015-03-22 15:01:14Z
+  Microsoft Office Proofing Tools 2013 - Espanol v.15.0.4420.1017
+2015-03-22 15:01:13Z
+  Microsoft OneNote MUI (English) 2013 v.15.0.4420.1017
+2015-03-22 15:01:12Z
+  Microsoft Groove MUI (English) 2013 v.15.0.4420.1017
+2015-03-22 15:01:11Z
+  Microsoft DCF MUI (English) 2013 v.15.0.4420.1017
+2015-03-22 15:01:10Z
+  Microsoft Publisher MUI (English) 2013 v.15.0.4420.1017
+2015-03-22 15:01:09Z
+  Microsoft PowerPoint MUI (English) 2013 v.15.0.4420.1017
+2015-03-22 15:01:07Z
+  Microsoft Excel MUI (English) 2013 v.15.0.4420.1017
+2015-03-22 15:01:05Z
+  Microsoft Lync MUI (English) 2013 v.15.0.4420.1017
+2015-03-22 15:01:04Z
+  Microsoft Office Shared 32-bit MUI (English) 2013 v.15.0.4420.1017
+2015-03-22 15:01:03Z
+  Microsoft InfoPath MUI (English) 2013 v.15.0.4420.1017
+2015-03-22 15:01:02Z
+  Microsoft Access MUI (English) 2013 v.15.0.4420.1017
+  Microsoft Access Setup Metadata MUI (English) 2013 v.15.0.4420.1017
+2015-03-22 15:01:01Z
+  Microsoft Office Shared Setup Metadata MUI (English) 2013 v.15.0.4420.1017
+2015-03-22 15:00:59Z
+  Microsoft Office Shared MUI (English) 2013 v.15.0.4420.1017
+
+Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall
+2015-03-23 20:02:46Z
+  Google Drive v.1.20.8672.3137
+2015-03-23 20:01:01Z
+  Apple Software Update v.2.1.3.127
+2015-03-23 20:00:45Z
+  Apple Application Support v.3.0.6
+2015-03-22 15:16:03Z
+  Google Update Helper v.1.3.26.9
+2015-03-22 15:11:51Z
+  Google Chrome v.41.0.2272.101
+```
+A lot of standard Microsoft Office tools but the things that stick out to me are Eraser, Google Drive, DXM_Runtime, Microsoft .NET Framework 4, and the Apple related softwares (Bonjour, Apple Software Update, Apple Application Support).
+
 1. List application execution logs. (Executable path, execution time, execution count...)
 1. List all traces about the system on/off and the user logon/logoff. (It should be considered only during a time range between 09:00 and 18:00 in the timezone from Question 4.)
 1. What web browsers were used?
