@@ -461,6 +461,9 @@ Value names with no time stamps:
   {A77F5D77-2E2B-44C3-A6A2-ABA601054A51}\Accessories\Accessibility\Magnify.lnk (7)
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------
+Prefetch Parse
+
+PECmd.exe -d "D:\Kape Triage\G\Windows\prefetch" --csv . 
 
 | ExecutableName                | RunCount | LastRun         |
 |-------------------------------|----------|-----------------|
@@ -561,6 +564,31 @@ Value names with no time stamps:
 | NTOSBOOT                      | 2        | 3/22/2015 14:51 |
 ```
 #### 13. List all traces about the system on/off and the user logon/logoff. (It should be considered only during a time range between 09:00 and 18:00 in the timezone from Question 4.)
+
+```
+| EventRecordId | TimeCreated   | EventId | Computer     | MapDescription            | UserName                       | PayloadData1                         | PayloadData2 | PayloadData3      |
+|---------------|---------------|---------|--------------|---------------------------|--------------------------------|--------------------------------------|--------------|-------------------|
+| 62            | 3/25/15 10:33 | 4624    | informant-PC | Successful logon          | -\-                            | Target: NT AUTHORITY\ANONYMOUS LOGON | LogonType 3  | LogonId: 0x28C63  |
+| 1150          | 3/25/15 13:05 | 4624    | informant-PC | Successful logon          | -\-                            | Target: NT AUTHORITY\ANONYMOUS LOGON | LogonType 3  | LogonId: 0x1C0D1  |
+| 1152          | 3/25/15 13:06 | 4624    | informant-PC | Successful logon          | WORKGROUP\INFORMANT-PC$        | Target: informant-PC\informant       | LogonType 2  | LogonId: 0x25465  |
+| 1153          | 3/25/15 13:06 | 4624    | informant-PC | Successful logon          | WORKGROUP\INFORMANT-PC$        | Target: informant-PC\informant       | LogonType 2  | LogonId: 0x25493  |
+| 1166          | 3/25/15 14:45 | 4624    | informant-PC | Successful logon          | WORKGROUP\INFORMANT-PC$        | Target: informant-PC\informant       | LogonType 7  | LogonId: 0x157773 |
+| 1170          | 3/25/15 14:45 | 4634    | informant-PC | An account was logged off |                                | Target: informant-PC\informant       | LogonType 7  | LogonId: 0x157773 |
+| 1167          | 3/25/15 14:45 | 4624    | informant-PC | Successful logon          | WORKGROUP\INFORMANT-PC$        | Target: informant-PC\informant       | LogonType 7  | LogonId: 0x15777F |
+| 1169          | 3/25/15 14:45 | 4634    | informant-PC | An account was logged off |                                | Target: informant-PC\informant       | LogonType 7  | LogonId: 0x15777F |
+| 1191          | 3/25/15 15:30 | 4647    | informant-PC | User initiated logoff     | Target: informant-PC\informant |                                      |              | LogonId: 0x25493  |
+```
+```
+| EventRecordId | TimeCreated      | EventId | Level | Provider                       | Channel | Computer     | UserId                                         | MapDescription                    |
+|---------------|------------------|---------|-------|--------------------------------|---------|--------------|------------------------------------------------|-----------------------------------|
+| 520           | 3/25/15 10:33 AM | 6005    | Info  | EventLog                       | System  | informant-PC |                                                | The Event log service was started |
+| 531           | 3/25/15 10:18 AM | 109     | Info  | Microsoft-Windows-Kernel-Power | System  | informant-PC |                                                |                                   |
+| 1463          | 3/25/15 1:05 PM  | 6005    | Info  | EventLog                       | System  | informant-PC |                                                | The Event log service was started |
+| 1609          | 3/25/15 3:30 PM  | 1074    | Info  | USER32                         | System  | informant-PC | S-1-5-21-2425377081-3129163575-2985601102-1000 | A user initiated a system restart |
+| 1610          | 3/25/15 3:30 PM  | 1074    | Info  | USER32                         | System  | informant-PC | S-1-5-21-2425377081-3129163575-2985601102-1000 | A user initiated a system restart |
+| 1624          | 3/25/15 3:31 PM  | 6006    | Info  | EventLog                       | System  | informant-PC |                                                | The Event log service was stopped |
+```
+
 1. What web browsers were used?
 1. Identify directory/file paths related to the web browser history.
 1. What websites were the suspect accessing? (Timestamp, URL...)
