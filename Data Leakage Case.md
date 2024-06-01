@@ -351,8 +351,216 @@ Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall
 ```
 A lot of standard Microsoft Office tools but the things that stick out to me are Eraser, Google Drive, DXM_Runtime, Microsoft .NET Framework 4, and the Apple related softwares (Bonjour, Apple Software Update, Apple Application Support).
 
-1. List application execution logs. (Executable path, execution time, execution count...)
-1. List all traces about the system on/off and the user logon/logoff. (It should be considered only during a time range between 09:00 and 18:00 in the timezone from Question 4.)
+#### 12. List application execution logs. (Executable path, execution time, execution count...)
+Two different artifacts come to mind when I see we need execution count: UserAssist and Prefetch. To review the Software\Microsoft\Windows\CurrentVersion\Explorer\UserAssist key I will use the regripper plugin userassist on the informant user's NTUSER.dat hive. For Prefetch I will use Eric Zimmerman's PEcmd.exe tool on the Windows\prefetch directory.
+```
+rip.exe -r "D:\Cases\NIST\Data Leakage Case\Kape Triage\G\Users\informant\NTUSER.DAT" -p userassist
+
+Launching userassist v.20170204
+UserAssist
+Software\Microsoft\Windows\CurrentVersion\Explorer\UserAssist
+LastWrite Time 2015-03-22 14:35:01Z
+
+{CEBFF5CD-ACE2-4F4F-9178-9926F41749EA} **This GUID provides a list of applications, files, links, and other objects that have been accessed.**
+2015-03-25 15:28:47Z
+  {1AC14E77-02E7-4E5D-B744-2EB1AE5198B7}\xpsrchvw.exe (1)
+2015-03-25 15:24:48Z
+  {6D809377-6AF0-444B-8957-A3773F02200E}\Microsoft Office\Office15\WINWORD.EXE (4)
+2015-03-25 15:21:30Z
+  {7C5A40EF-A0FB-4BFC-874A-C0F2E0B9FA8E}\Google\Drive\googledrivesync.exe (1)
+2015-03-25 15:15:50Z
+  {6D809377-6AF0-444B-8957-A3773F02200E}\CCleaner\CCleaner64.exe (1)
+2015-03-25 15:12:28Z
+  {6D809377-6AF0-444B-8957-A3773F02200E}\Eraser\Eraser.exe (1)
+2015-03-25 14:57:56Z
+  C:\Users\informant\Desktop\Download\ccsetup504.exe (1)
+2015-03-25 14:50:14Z
+  C:\Users\informant\Desktop\Download\Eraser 6.2.0.2962.exe (1)
+2015-03-25 14:46:05Z
+  Microsoft.InternetExplorer.Default (5)
+2015-03-25 14:42:47Z
+  Microsoft.Windows.MediaPlayer32 (1)
+2015-03-25 14:41:03Z
+  {6D809377-6AF0-444B-8957-A3773F02200E}\Microsoft Office\Office15\OUTLOOK.EXE (5)
+2015-03-24 21:05:38Z
+  Chrome (7)
+2015-03-24 18:31:55Z
+  Microsoft.Windows.StickyNotes (13)
+2015-03-24 14:16:37Z
+  {1AC14E77-02E7-4E5D-B744-2EB1AE5198B7}\rundll32.exe (1)
+2015-03-23 20:27:33Z
+  {6D809377-6AF0-444B-8957-A3773F02200E}\Microsoft Office\Office15\POWERPNT.EXE (2)
+2015-03-23 20:26:50Z
+  {6D809377-6AF0-444B-8957-A3773F02200E}\Microsoft Office\Office15\EXCEL.EXE (1)
+2015-03-23 20:10:19Z
+  {1AC14E77-02E7-4E5D-B744-2EB1AE5198B7}\cmd.exe (4)
+2015-03-22 15:24:47Z
+  {1AC14E77-02E7-4E5D-B744-2EB1AE5198B7}\slui.exe (3)
+2015-03-22 15:12:32Z
+  C:\Users\informant\Desktop\Download\IE11-Windows6.1-x64-en-us.exe (1)
+2015-03-22 14:33:13Z
+  Microsoft.Windows.GettingStarted (14)
+  Microsoft.Windows.MediaCenter (13)
+  {1AC14E77-02E7-4E5D-B744-2EB1AE5198B7}\calc.exe (12)
+  {1AC14E77-02E7-4E5D-B744-2EB1AE5198B7}\SnippingTool.exe (10)
+  {1AC14E77-02E7-4E5D-B744-2EB1AE5198B7}\mspaint.exe (9)
+  Microsoft.Windows.RemoteDesktop (8)
+  {1AC14E77-02E7-4E5D-B744-2EB1AE5198B7}\magnify.exe (7)
+  {6D809377-6AF0-444B-8957-A3773F02200E}\Microsoft Games\Solitaire\solitaire.exe (6)
+
+Value names with no time stamps:
+  UEME_CTLCUACount:ctor
+  Microsoft.Windows.ControlPanel
+  {F38BF404-1D43-42F2-9305-67DE0B28FC23}\explorer.exe
+  Microsoft.Windows.Shell.RunDialog
+  {7C5A40EF-A0FB-4BFC-874A-C0F2E0B9FA8E}\GUMBAD6.tmp\GoogleUpdate.exe
+  {7C5A40EF-A0FB-4BFC-874A-C0F2E0B9FA8E}\Google\Update\GoogleUpdate.exe
+  {1AC14E77-02E7-4E5D-B744-2EB1AE5198B7}\wscript.exe
+  Microsoft.Office.OUTLOOK.EXE.15
+  Microsoft.Windows.ControlPanel.Taskbar
+  {6D809377-6AF0-444B-8957-A3773F02200E}\Microsoft Office\Office15\FIRSTRUN.EXE
+  C:\Users\informant\Downloads\icloudsetup.exe
+  Microsoft.Windows.WindowsInstaller
+  {7C5A40EF-A0FB-4BFC-874A-C0F2E0B9FA8E}\GUMA94B.tmp\GoogleUpdate.exe
+  {7C5A40EF-A0FB-4BFC-874A-C0F2E0B9FA8E}\Common Files\Apple\Internet Services\iCloud.exe
+  {1AC14E77-02E7-4E5D-B744-2EB1AE5198B7}\taskmgr.exe
+  Microsoft.Windows.PhotoViewer
+  C:\Users\informant\AppData\Local\Temp\eraserInstallBootstrapper\dotNetFx40_Full_setup.exe
+  C:\Users\informant\AppData\Local\Temp\~nsu.tmp\Au_.exe
+
+{F4E57C4B-2036-45F0-A9AB-443BCFE33D9F} **This GUID proivdes a list of the shortcut links used to start programs.**
+2015-03-25 15:21:30Z
+  {0139D44E-6AFE-49F2-8690-3DAFCAE6FFB8}\Google Drive\Google Drive.lnk (1)
+2015-03-25 15:15:50Z
+  C:\Users\Public\Desktop\CCleaner.lnk (1)
+2015-03-25 15:12:28Z
+  C:\Users\Public\Desktop\Eraser.lnk (1)
+2015-03-25 14:46:05Z
+  {9E3995AB-1F9C-4F13-B827-48B24B6C7174}\TaskBar\Internet Explorer.lnk (5)
+2015-03-25 14:42:47Z
+  {9E3995AB-1F9C-4F13-B827-48B24B6C7174}\TaskBar\Windows Media Player.lnk (1)
+2015-03-25 14:41:03Z
+  {0139D44E-6AFE-49F2-8690-3DAFCAE6FFB8}\Microsoft Office 2013\Outlook 2013.lnk (5)
+2015-03-24 21:05:38Z
+  {9E3995AB-1F9C-4F13-B827-48B24B6C7174}\TaskBar\Google Chrome.lnk (5)
+2015-03-24 18:32:15Z
+  {0139D44E-6AFE-49F2-8690-3DAFCAE6FFB8}\Microsoft Office 2013\Word 2013.lnk (1)
+2015-03-24 18:31:55Z
+  {0139D44E-6AFE-49F2-8690-3DAFCAE6FFB8}\Accessories\Sticky Notes.lnk (13)
+2015-03-24 18:29:07Z
+  ::{ED228FDF-9EA8-4870-83B1-96B02CFE0D52}\{00D8862B-6453-4957-A821-3D98D74C76BE} (7) **GUID maps to Solitaire.exe**
+2015-03-23 17:26:50Z
+  C:\Users\Public\Desktop\Google Chrome.lnk (2)
+2015-03-22 14:33:13Z
+  {0139D44E-6AFE-49F2-8690-3DAFCAE6FFB8}\Accessories\Welcome Center.lnk (14)
+  {0139D44E-6AFE-49F2-8690-3DAFCAE6FFB8}\Media Center.lnk (13)
+  {0139D44E-6AFE-49F2-8690-3DAFCAE6FFB8}\Accessories\Calculator.lnk (12)
+  {0139D44E-6AFE-49F2-8690-3DAFCAE6FFB8}\Accessories\Snipping Tool.lnk (10)
+  {0139D44E-6AFE-49F2-8690-3DAFCAE6FFB8}\Accessories\Paint.lnk (9)
+  {0139D44E-6AFE-49F2-8690-3DAFCAE6FFB8}\Accessories\Remote Desktop Connection.lnk (8)
+  {A77F5D77-2E2B-44C3-A6A2-ABA601054A51}\Accessories\Accessibility\Magnify.lnk (7)
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+| ExecutableName                | RunCount | LastRun         |
+|-------------------------------|----------|-----------------|
+| XPSRCHVW.EXE                  | 1        | 3/25/2015 15:28 |
+| SEARCHFILTERHOST.EXE          | 82       | 3/25/2015 15:28 |
+| SEARCHPROTOCOLHOST.EXE        | 76       | 3/25/2015 15:28 |
+| DLLHOST.EXE                   | 59       | 3/25/2015 15:28 |
+| DLLHOST.EXE                   | 7        | 3/25/2015 15:24 |
+| OSPPSVC.EXE                   | 12       | 3/25/2015 15:24 |
+| WINWORD.EXE                   | 3        | 3/25/2015 15:24 |
+| IEXPLORE.EXE                  | 14       | 3/25/2015 15:22 |
+| IEXPLORE.EXE                  | 2        | 3/25/2015 15:22 |
+| GOOGLEDRIVESYNC.EXE           | 2        | 3/25/2015 15:21 |
+| MSIEXEC.EXE                   | 7        | 3/25/2015 15:19 |
+| MSIEXEC.EXE                   | 7        | 3/25/2015 15:18 |
+| SCHTASKS.EXE                  | 2        | 3/25/2015 15:18 |
+| CONHOST.EXE                   | 16       | 3/25/2015 15:18 |
+| DLLHOST.EXE                   | 33       | 3/25/2015 15:18 |
+| CONSENT.EXE                   | 22       | 3/25/2015 15:18 |
+| AU_.EXE                       | 1        | 3/25/2015 15:18 |
+| DLLHOST.EXE                   | 1        | 3/25/2015 15:18 |
+| UNINST.EXE                    | 1        | 3/25/2015 15:18 |
+| DLLHOST.EXE                   | 14       | 3/25/2015 15:18 |
+| GOOGLEUPDATE.EXE              | 38       | 3/25/2015 15:16 |
+| TASKENG.EXE                   | 25       | 3/25/2015 15:16 |
+| WMIPRVSE.EXE                  | 23       | 3/25/2015 15:15 |
+| CCLEANER64.EXE                | 2        | 3/25/2015 15:15 |
+| AUDIODG.EXE                   | 31       | 3/25/2015 15:14 |
+| ERASER.EXE                    | 2        | 3/25/2015 15:13 |
+| TASKHOST.EXE                  | 7        | 3/25/2015 15:08 |
+| PING.EXE                      | 1        | 3/25/2015 14:58 |
+| CCSETUP504.EXE                | 1        | 3/25/2015 14:57 |
+| SVCHOST.EXE                   | 6        | 3/25/2015 14:57 |
+| VSSVC.EXE                     | 6        | 3/25/2015 14:57 |
+| SETUPUTILITY.EXE              | 3        | 3/25/2015 14:54 |
+| LODCTR.EXE                    | 7        | 3/25/2015 14:54 |
+| LODCTR.EXE                    | 7        | 3/25/2015 14:54 |
+| NGEN.EXE                      | 4        | 3/25/2015 14:54 |
+| MSCORSVW.EXE                  | 8        | 3/25/2015 14:54 |
+| NGEN.EXE                      | 4        | 3/25/2015 14:54 |
+| MOFCOMP.EXE                   | 3        | 3/25/2015 14:54 |
+| ASPNET_REGIIS.EXE             | 1        | 3/25/2015 14:54 |
+| MOFCOMP.EXE                   | 3        | 3/25/2015 14:54 |
+| ASPNET_REGIIS.EXE             | 1        | 3/25/2015 14:54 |
+| WEVTUTIL.EXE                  | 4        | 3/25/2015 14:54 |
+| WEVTUTIL.EXE                  | 2        | 3/25/2015 14:54 |
+| SERVICEMODELREG.EXE           | 1        | 3/25/2015 14:54 |
+| SC.EXE                        | 8        | 3/25/2015 14:54 |
+| SERVICEMODELREG.EXE           | 1        | 3/25/2015 14:54 |
+| UNLODCTR.EXE                  | 7        | 3/25/2015 14:54 |
+| UNLODCTR.EXE                  | 7        | 3/25/2015 14:54 |
+| MSCORSVW.EXE                  | 14       | 3/25/2015 14:53 |
+| REGTLIBV12.EXE                | 7        | 3/25/2015 14:51 |
+| REGTLIBV12.EXE                | 7        | 3/25/2015 14:51 |
+| TMP5B99.TMP.EXE               | 1        | 3/25/2015 14:50 |
+| WUAUCLT.EXE                   | 1        | 3/25/2015 14:50 |
+| TMPFF8D.TMP.EXE               | 1        | 3/25/2015 14:50 |
+| TRUSTEDINSTALLER.EXE          | 4        | 3/25/2015 14:50 |
+| WUSA.EXE                      | 1        | 3/25/2015 14:50 |
+| SETUP.EXE                     | 1        | 3/25/2015 14:50 |
+| DOTNETFX40_FULL_SETUP.EXE     | 1        | 3/25/2015 14:50 |
+| ERASER 6.2.0.2962.EXE         | 1        | 3/25/2015 14:50 |
+| LOGONUI.EXE                   | 2        | 3/25/2015 14:45 |
+| SETUP_WM.EXE                  | 1        | 3/25/2015 14:42 |
+| WMPLAYER.EXE                  | 1        | 3/25/2015 14:42 |
+| OUTLOOK.EXE                   | 1        | 3/25/2015 14:41 |
+| SVCHOST.EXE                   | 2        | 3/25/2015 14:31 |
+| MOBSYNC.EXE                   | 1        | 3/25/2015 14:19 |
+| WMPNSCFG.EXE                  | 20       | 3/25/2015 14:19 |
+| DLLHOST.EXE                   | 1        | 3/25/2015 13:29 |
+| RUNDLL32.EXE                  | 1        | 3/25/2015 13:29 |
+| CONTROL.EXE                   | 1        | 3/25/2015 13:29 |
+| RUNDLL32.EXE                  | 1        | 3/25/2015 13:23 |
+| WERMGR.EXE                    | 5        | 3/25/2015 13:19 |
+| WSQMCONS.EXE                  | 1        | 3/25/2015 13:14 |
+| WMIADAP.EXE                   | 11       | 3/25/2015 13:09 |
+| SVCHOST.EXE                   | 2        | 3/25/2015 13:07 |
+| SPPSVC.EXE                    | 2        | 3/25/2015 13:07 |
+| MSOSYNC.EXE                   | 1        | 3/25/2015 13:07 |
+| MCBUILDER.EXE                 | 1        | 3/25/2015 10:33 |
+| MSCORSVW.EXE                  | 4        | 3/25/2015 10:18 |
+| MSCORSVW.EXE                  | 3        | 3/25/2015 10:18 |
+| CLRGC.EXE                     | 3        | 3/25/2015 10:18 |
+| NETSH.EXE                     | 2        | 3/25/2015 10:18 |
+| BFSVC.EXE                     | 2        | 3/25/2015 10:18 |
+| DRVINST.EXE                   | 14       | 3/25/2015 10:18 |
+| SEARCHINDEXER.EXE             | 1        | 3/25/2015 10:17 |
+| SVCHOST.EXE                   | 1        | 3/25/2015 10:17 |
+| CHROME.EXE                    | 71       | 3/24/2015 21:05 |
+| RUNDLL32.EXE                  | 1        | 3/24/2015 21:03 |
+| DEVICEDISPLAYOBJECTPROVIDER.E | 1        | 3/24/2015 21:02 |
+| DLLHOST.EXE                   | 3        | 3/24/2015 21:01 |
+| SVCHOST.EXE                   | 1        | 3/24/2015 20:58 |
+| RUNDLL32.EXE                  | 1        | 3/24/2015 20:52 |
+| DLLHOST.EXE                   | 3        | 3/24/2015 20:24 |
+| STIKYNOT.EXE                  | 2        | 3/24/2015 18:31 |
+| SOLITAIRE.EXE                 | 1        | 3/24/2015 18:29 |
+| NTOSBOOT                      | 2        | 3/22/2015 14:51 |
+```
+#### 13. List all traces about the system on/off and the user logon/logoff. (It should be considered only during a time range between 09:00 and 18:00 in the timezone from Question 4.)
 1. What web browsers were used?
 1. Identify directory/file paths related to the web browser history.
 1. What websites were the suspect accessing? (Timestamp, URL...)
