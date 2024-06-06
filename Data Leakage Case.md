@@ -566,27 +566,62 @@ PECmd.exe -d "D:\Kape Triage\G\Windows\prefetch" --csv .
 #### 13. List all traces about the system on/off and the user logon/logoff. (It should be considered only during a time range between 09:00 and 18:00 in the timezone from Question 4.)
 
 ```
-| EventRecordId | TimeCreated   | EventId | Computer     | MapDescription            | UserName                       | PayloadData1                         | PayloadData2 | PayloadData3      |
-|---------------|---------------|---------|--------------|---------------------------|--------------------------------|--------------------------------------|--------------|-------------------|
-| 62            | 3/25/15 10:33 | 4624    | informant-PC | Successful logon          | -\-                            | Target: NT AUTHORITY\ANONYMOUS LOGON | LogonType 3  | LogonId: 0x28C63  |
-| 1150          | 3/25/15 13:05 | 4624    | informant-PC | Successful logon          | -\-                            | Target: NT AUTHORITY\ANONYMOUS LOGON | LogonType 3  | LogonId: 0x1C0D1  |
-| 1152          | 3/25/15 13:06 | 4624    | informant-PC | Successful logon          | WORKGROUP\INFORMANT-PC$        | Target: informant-PC\informant       | LogonType 2  | LogonId: 0x25465  |
-| 1153          | 3/25/15 13:06 | 4624    | informant-PC | Successful logon          | WORKGROUP\INFORMANT-PC$        | Target: informant-PC\informant       | LogonType 2  | LogonId: 0x25493  |
-| 1166          | 3/25/15 14:45 | 4624    | informant-PC | Successful logon          | WORKGROUP\INFORMANT-PC$        | Target: informant-PC\informant       | LogonType 7  | LogonId: 0x157773 |
-| 1170          | 3/25/15 14:45 | 4634    | informant-PC | An account was logged off |                                | Target: informant-PC\informant       | LogonType 7  | LogonId: 0x157773 |
-| 1167          | 3/25/15 14:45 | 4624    | informant-PC | Successful logon          | WORKGROUP\INFORMANT-PC$        | Target: informant-PC\informant       | LogonType 7  | LogonId: 0x15777F |
-| 1169          | 3/25/15 14:45 | 4634    | informant-PC | An account was logged off |                                | Target: informant-PC\informant       | LogonType 7  | LogonId: 0x15777F |
-| 1191          | 3/25/15 15:30 | 4647    | informant-PC | User initiated logoff     | Target: informant-PC\informant |                                      |              | LogonId: 0x25493  |
+Login / Logoff Information from Security Log
+
+| TimeCreated - UTC    | TimeCreated - EST     | EventId | Channel  | Computer     | MapDescription                                   | PayloadData1                   | PayloadData2                | PayloadData3      |
+|----------------------|-----------------------|---------|----------|--------------|--------------------------------------------------|--------------------------------|-----------------------------|-------------------|
+| 3/22/2015 2:53:40 PM | 3/22/2015 10:53:40 AM | 4648    | Security | informant-PC | A logon was attempted using explicit credentials | Target: informant-PC\informant | TargetServerName: localhost | PID: 0x184        |
+| 3/22/2015 2:53:40 PM | 3/22/2015 10:53:40 AM | 4624    | Security | informant-PC | Successful logon                                 | Target: informant-PC\informant | LogonType 2                 | LogonId: 0x26923  |
+| 3/22/2015 2:53:40 PM | 3/22/2015 10:53:40 AM | 4624    | Security | informant-PC | Successful logon                                 | Target: informant-PC\informant | LogonType 2                 | LogonId: 0x26951  |
+| 3/22/2015 3:24:04 PM | 3/22/2015 11:24:04 AM | 4648    | Security | informant-PC | A logon was attempted using explicit credentials | Target: informant-PC\informant | TargetServerName: localhost | PID: 0x1B8        |
+| 3/22/2015 3:24:04 PM | 3/22/2015 11:24:04 AM | 4624    | Security | informant-PC | Successful logon                                 | Target: informant-PC\informant | LogonType 2                 | LogonId: 0x56F8B  |
+| 3/22/2015 3:24:04 PM | 3/22/2015 11:24:04 AM | 4624    | Security | informant-PC | Successful logon                                 | Target: informant-PC\informant | LogonType 2                 | LogonId: 0x56FB9  |
+| 3/22/2015 3:45:16 PM | 3/22/2015 11:45:16 AM | 4648    | Security | informant-PC | A logon was attempted using explicit credentials | Target: informant-PC\informant | TargetServerName: localhost | PID: 0x1B8        |
+| 3/22/2015 3:45:16 PM | 3/22/2015 11:45:16 AM | 4624    | Security | informant-PC | Successful logon                                 | Target: informant-PC\informant | LogonType 2                 | LogonId: 0x224E3  |
+| 3/22/2015 3:45:16 PM | 3/22/2015 11:45:16 AM | 4624    | Security | informant-PC | Successful logon                                 | Target: informant-PC\informant | LogonType 2                 | LogonId: 0x22517  |
+| 3/22/2015 3:57:54 PM | 3/22/2015 11:57:54 AM | 4648    | Security | informant-PC | A logon was attempted using explicit credentials | Target: informant-PC\informant | TargetServerName: localhost | PID: 0xC1C        |
+| 3/22/2015 3:57:54 PM | 3/22/2015 11:57:54 AM | 4624    | Security | informant-PC | Successful logon                                 | Target: informant-PC\informant | LogonType 2                 | LogonId: 0x157B62 |
+| 3/22/2015 3:57:54 PM | 3/22/2015 11:57:54 AM | 4624    | Security | informant-PC | Successful logon                                 | Target: informant-PC\informant | LogonType 2                 | LogonId: 0x157B78 |
+| 3/22/2015 3:57:56 PM | 3/22/2015 11:57:56 AM | 4634    | Security | informant-PC | An account was logged off                        | Target: informant-PC\informant | LogonType 2                 | LogonId: 0x157B78 |
+| 3/22/2015 3:57:56 PM | 3/22/2015 11:57:56 AM | 4634    | Security | informant-PC | An account was logged off                        | Target: informant-PC\informant | LogonType 2                 | LogonId: 0x157B62 |
+| 3/23/2015 5:24:41 PM | 3/23/2015 1:24:41 PM  | 4648    | Security | informant-PC | A logon was attempted using explicit credentials | Target: informant-PC\informant | TargetServerName: localhost | PID: 0x1A8        |
+| 3/23/2015 5:24:41 PM | 3/23/2015 1:24:41 PM  | 4624    | Security | informant-PC | Successful logon                                 | Target: informant-PC\informant | LogonType 2                 | LogonId: 0x2359C  |
+| 3/23/2015 5:24:41 PM | 3/23/2015 1:24:41 PM  | 4624    | Security | informant-PC | Successful logon                                 | Target: informant-PC\informant | LogonType 2                 | LogonId: 0x235CC  |
+| 3/24/2015 1:21:45 PM | 3/24/2015 9:21:45 AM  | 4648    | Security | informant-PC | A logon was attempted using explicit credentials | Target: informant-PC\informant | TargetServerName: localhost | PID: 0x1B8        |
+| 3/24/2015 1:21:45 PM | 3/24/2015 9:21:45 AM  | 4624    | Security | informant-PC | Successful logon                                 | Target: informant-PC\informant | LogonType 2                 | LogonId: 0x2269C  |
+| 3/24/2015 1:21:45 PM | 3/24/2015 9:21:45 AM  | 4624    | Security | informant-PC | Successful logon                                 | Target: informant-PC\informant | LogonType 2                 | LogonId: 0x226C4  |
+| 3/24/2015 6:28:38 PM | 3/24/2015 2:28:38 PM  | 4648    | Security | informant-PC | A logon was attempted using explicit credentials | Target: informant-PC\informant | TargetServerName: localhost | PID: 0x1B8        |
+| 3/24/2015 6:28:38 PM | 3/24/2015 2:28:38 PM  | 4624    | Security | informant-PC | Successful logon                                 | Target: informant-PC\informant | LogonType 7                 | LogonId: 0x6CABCF |
+| 3/24/2015 6:28:38 PM | 3/24/2015 2:28:38 PM  | 4624    | Security | informant-PC | Successful logon                                 | Target: informant-PC\informant | LogonType 7                 | LogonId: 0x6CABDD |
+| 3/24/2015 6:28:38 PM | 3/24/2015 2:28:38 PM  | 4634    | Security | informant-PC | An account was logged off                        | Target: informant-PC\informant | LogonType 7                 | LogonId: 0x6CABDD |
+| 3/24/2015 6:28:38 PM | 3/24/2015 2:28:38 PM  | 4634    | Security | informant-PC | An account was logged off                        | Target: informant-PC\informant | LogonType 7                 | LogonId: 0x6CABCF |
+| 3/25/2015 1:06:09 PM | 3/25/2015 9:06:09 AM  | 4648    | Security | informant-PC | A logon was attempted using explicit credentials | Target: informant-PC\informant | TargetServerName: localhost | PID: 0x194        |
+| 3/25/2015 1:06:09 PM | 3/25/2015 9:06:09 AM  | 4624    | Security | informant-PC | Successful logon                                 | Target: informant-PC\informant | LogonType 2                 | LogonId: 0x25465  |
+| 3/25/2015 1:06:09 PM | 3/25/2015 9:06:09 AM  | 4624    | Security | informant-PC | Successful logon                                 | Target: informant-PC\informant | LogonType 2                 | LogonId: 0x25493  |
+| 3/25/2015 2:45:59 PM | 3/25/2015 10:45:59 AM | 4648    | Security | informant-PC | A logon was attempted using explicit credentials | Target: informant-PC\informant | TargetServerName: localhost | PID: 0x194        |
+| 3/25/2015 2:45:59 PM | 3/25/2015 10:45:59 AM | 4624    | Security | informant-PC | Successful logon                                 | Target: informant-PC\informant | LogonType 7                 | LogonId: 0x157773 |
+| 3/25/2015 2:45:59 PM | 3/25/2015 10:45:59 AM | 4624    | Security | informant-PC | Successful logon                                 | Target: informant-PC\informant | LogonType 7                 | LogonId: 0x15777F |
+| 3/25/2015 2:45:59 PM | 3/25/2015 10:45:59 AM | 4634    | Security | informant-PC | An account was logged off                        | Target: informant-PC\informant | LogonType 7                 | LogonId: 0x15777F |
+| 3/25/2015 2:45:59 PM | 3/25/2015 10:45:59 AM | 4634    | Security | informant-PC | An account was logged off                        | Target: informant-PC\informant | LogonType 7                 | LogonId: 0x157773 |
 ```
 ```
-| EventRecordId | TimeCreated      | EventId | Level | Provider                       | Channel | Computer     | UserId                                         | MapDescription                    |
-|---------------|------------------|---------|-------|--------------------------------|---------|--------------|------------------------------------------------|-----------------------------------|
-| 520           | 3/25/15 10:33 AM | 6005    | Info  | EventLog                       | System  | informant-PC |                                                | The Event log service was started |
-| 531           | 3/25/15 10:18 AM | 109     | Info  | Microsoft-Windows-Kernel-Power | System  | informant-PC |                                                |                                   |
-| 1463          | 3/25/15 1:05 PM  | 6005    | Info  | EventLog                       | System  | informant-PC |                                                | The Event log service was started |
-| 1609          | 3/25/15 3:30 PM  | 1074    | Info  | USER32                         | System  | informant-PC | S-1-5-21-2425377081-3129163575-2985601102-1000 | A user initiated a system restart |
-| 1610          | 3/25/15 3:30 PM  | 1074    | Info  | USER32                         | System  | informant-PC | S-1-5-21-2425377081-3129163575-2985601102-1000 | A user initiated a system restart |
-| 1624          | 3/25/15 3:31 PM  | 6006    | Info  | EventLog                       | System  | informant-PC |                                                | The Event log service was stopped |
+Shutdown / Turn on Information from System Event Log
+
+| TimeCreated - UTC    | TimeCreated - EST     | EventId | Channel | Computer     | MapDescription                    | PayloadData1           |
+|----------------------|-----------------------|---------|---------|--------------|-----------------------------------|------------------------|
+| 3/22/2015 2:38:16 PM | 3/22/2015 10:38:16 AM | 6006    | System  | informant-PC | The Event log service was stopped | Computer: informant-PC |
+| 3/22/2015 2:51:16 PM | 3/22/2015 10:51:16 AM | 6005    | System  | informant-PC | The Event log service was started | Computer: informant-PC |
+| 3/22/2015 3:19:43 PM | 3/22/2015 11:19:43 AM | 6006    | System  | informant-PC | The Event log service was stopped | Computer: informant-PC |
+| 3/22/2015 3:22:54 PM | 3/22/2015 11:22:54 AM | 6005    | System  | informant-PC | The Event log service was started | Computer: informant-PC |
+| 3/22/2015 3:28:28 PM | 3/22/2015 11:28:28 AM | 6006    | System  | informant-PC | The Event log service was stopped | Computer: informant-PC |
+| 3/22/2015 3:43:38 PM | 3/22/2015 11:43:38 AM | 6005    | System  | informant-PC | The Event log service was started | Computer: informant-PC |
+| 3/22/2015 4:00:09 PM | 3/22/2015 12:00:09 PM | 6006    | System  | informant-PC | The Event log service was stopped | Computer: informant-PC |
+| 3/23/2015 5:24:24 PM | 3/23/2015 1:24:24 PM  | 6005    | System  | informant-PC | The Event log service was started | Computer: informant-PC |
+| 3/23/2015 9:03:01 PM | 3/23/2015 5:03:01 PM  | 6006    | System  | informant-PC | The Event log service was stopped | Computer: informant-PC |
+| 3/24/2015 1:21:36 PM | 3/24/2015 9:21:36 AM  | 6005    | System  | informant-PC | The Event log service was started | Computer: informant-PC |
+| 3/24/2015 9:07:27 PM | 3/24/2015 5:07:27 PM  | 6006    | System  | informant-PC | The Event log service was stopped | Computer: informant-PC |
+| 3/25/2015 1:05:43 PM | 3/25/2015 9:05:43 AM  | 6005    | System  | informant-PC | The Event log service was started | Computer: informant-PC |
+| 3/25/2015 3:31:00 PM | 3/25/2015 11:31:00 AM | 6006    | System  | informant-PC | The Event log service was stopped | Computer: informant-PC |
 ```
 
 1. What web browsers were used?
