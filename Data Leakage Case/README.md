@@ -181,9 +181,9 @@ This information is found in the SAM hive at SAM\SAM\Domains\Account\Users. Its 
 
 	User Name
 	1. informant
-	1. admin11
-	1. ITechTeam
-	1. temporary
+	2. admin11
+	3. ITechTeam
+	4. temporary
 
 #### 8. Who was the last user to logon into PC?
 ![image](https://github.com/garr3ttmjo/Writeups/assets/108881417/bd1edb0a-20bf-4844-9167-49814819ffad)
