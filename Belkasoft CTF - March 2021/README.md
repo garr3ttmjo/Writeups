@@ -41,7 +41,7 @@ Units are in 512-byte sectors
 004:  -------   0083884032   0083886079   0000002048   Unallocated
 ```
 
-Looking at the output there are two NTFS partitions to look at to determine the main volume. To look into further into each partion I will use the fls command. To view each partition provide the starting sector offset for each partition.
+Looking at the output there are two NTFS partitions to look at to determine the main volume. To look into further each partion I will use the fls command. To view each partition provide the starting sector offset for each partition.
 
 ```
 fls - List file and directory names in a disk image.
@@ -108,9 +108,9 @@ V/V 177408:	$OrphanFiles
 r/r 50-128-1:	hiberfil.sys
 r/r 79301-128-1:	pagefile.sys
 ```
-Viewing the file contents of each of these partitions shows the second one with a starting sector offset of 1126400 is the main volume we will want to be looking at containing user information.
+Viewing the file contents of each partition shows the second one with a starting sector offset of 1126400 is the main volume we will want to be looking at containing user information.
 
-To navigate through the file system you take can use the icat command to output the contents of the file or you can use the fls command to navigate throught the directories. To do this you need to provide the inode to the end of the command. This can be found in the second column ofthe fls output.
+To navigate through the file system you take can use the icat command to output the contents of the file or you can use the fls command to navigate through the directories. To do this you need to provide the inode to the end of the command. This can be found in the second column of the fls output.
 
 ## Sleuthkit Examples:
 ```
