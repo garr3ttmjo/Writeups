@@ -160,6 +160,12 @@ d/d 81805-144-1:	S-1-5-21-672274782-2342008316-3472871522-1001
 d/d 79320-144-1:	S-1-5-21-846388080-3680834429-2020154290-1001
 + r/r 80352-128-1:	desktop.ini
 ```
+```
+Extract adstresser directory and contents
+----------------------------------------
+tsk_recover -a -o 1126400 -d 855-144-16 SUSPECT.raw adstresser
+Files Recovered: 663
+```
 ## Timelime and MFT
 Other setup I am going to do before I start looking into the questions is to create a timeline using Sleuthkit and also parse the MFT using the nfts_dfir python tool.
 
@@ -606,7 +612,8 @@ r/r 170295-128-6:	SDelete.zip
 r/r 170295-128-8:	SDelete.zip:Zone.Identifier
 r/r 58234-128-4:	xraicommend-761263a55b8cfed4bcb8f87cbbb68beaf2ec2423.tar.gz
 r/r 58234-128-9:	xraicommend-761263a55b8cfed4bcb8f87cbbb68beaf2ec2423.tar.gz:Zone.Identifier
-
+```
+```
 icat -o 1126400 SUSPECT.raw 58234-128-9
 [ZoneTransfer]
 ZoneId=3
@@ -625,10 +632,12 @@ First you need to get the inode for the adstresser directory which is 855-144-16
 ```
 fls -o 1126400 SUSPECT.raw 83898-144-6 | grep adstresser
 d/d 855-144-16:	adstresser
-
+```
+```
 tsk_recover -a -o 1126400 -d 855-144-16 SUSPECT.raw adstresser
 Files Recovered: 663
-
+```
+```
 ls -a adstresser 
 .		.git		README.md	gradle		gradlew.bat	src
 ..		.gitignore	build.gradle	gradlew		settings.gradle
@@ -695,12 +704,6 @@ Author: anitghosh <anitghosh@praivacymatrix.com>
 Date:   Sat Feb 13 00:25:09 2021 +0100
 
     Added missing escape that lead to service disruptions in case of PEAR errors regarding connecting to database schema files to adjust the copyright file to batch load, and delete the var/test.log file.
-
-commit 3bea6b1fa984ee21ff25b2bd823465d0da9e59d2
-Author: anitghosh <anitghosh@praivacymatrix.com>
-Date:   Sat Feb 13 00:06:09 2021 +0100
-
-    Bugfix: Fixed error messages
 ```
 ```
 git show 5a404ec75b8a23efb8eba1e393cfea9b1a1dce77
@@ -725,7 +728,7 @@ index 2feebda..1f8103e 100644
                                 return null;
                         }
 ```
-Going through each of the logs still doesn't show anything to do with a email backdoor. But if we remember to the timeline HEAD wasn't the only branch being worked on. There was also the wip branch, maybe for work in progress?
+Going through each of the logs still doesn't show anything to do with a email backdoor. But if we remember from the timeline HEAD wasn't the only branch being worked on. There was also the wip branch, maybe for work in progress?
 ```
 /Users/anit.ghosh/adstresser/.git/logs/refs/remotes/origin/HEAD
 /Users/anit.ghosh/adstresser/.git/logs/refs/remotes/origin/HEAD ($FILE_NAME)
@@ -799,4 +802,190 @@ I see three main parts of this script
 * Check if runtests.sh process is running
 * Sent email to **alert872802737@protonmail.com** if true
 
+9. What is the SHA256 hash of the file exfiltrated?
+Looking back at the browsing history we found ealier, the last thing Anit did was google how to create a password protected zip file. If go to that site all the top response are examples on how to do from the command line. On Windows the CMD commands are not stored anywhere but the Powershell ones are. We can find these records in the ConsoleHost_history.txt file and there are two of them on the disk.
+```
+fls -rp -o 1126400 SUSPECT.raw | grep 'ConsoleHost_history.txt'
+r/r 100038-128-1:	Users/Administrator/AppData/Roaming/Microsoft/Windows/PowerShell/PSReadLine/ConsoleHost_history.txt
+r/r 87827-128-4:	Users/anit.ghosh/AppData/Roaming/Microsoft/Windows/PowerShell/PSReadLine/ConsoleHost_history.txt
+```
+Nothing interesting in the Administrater Powershell history.
+```
+icat -o 1126400 SUSPECT.raw 100038-128-1
+Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
+choco install poshgit
+nano .\Drivers\etc\hosts
+nano .\drivers\etc\hosts
+vim
+nano
+vim
+git
+bsh
+```
+Anit's Powershell history would have provided us hints on the adstresser repo activity but we can also see this is how Anit created the 7z to store the source code and upload to the anonymous file share site. The file we are looking for is PHOTOS.7z but Anit sdeleted the tmp folder the file was stored so its unlikely it is on the system. But we can reference the MFT table we parsed at the beginning of this exercise to check.
+```
+icat -o 1126400 SUSPECT.raw 87827-128-4                        
+Get-Host | Select-Object Version
+git
+Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
+git clone http://git.pm.internal/wstarnes/adstresser
+git add -A
+git commit
+git push
+git branch tes
+git branch test
+git checkout test
+git add -A
+git coomit
+git commit
+git push
+git commit
+git add -A
+git push
+git checkout master
+git add -A
+git commit
+git push
+git pull
+git commit
+git push
+git add -A
+git commit
+git push
+git commit
+git push
+git pull
+git push
+git commit
+git push
+git branch wip
+git checkout wip
+git add -A
+git commit -m "work in progress..."
+git push
+cd .\adstresser\
+git checkout master
+git branch -d wip
+cd ../Desktop
+cd tmp
+7z.exe x .\xraicommend-761263a55b8cfed4bcb8f87cbbb68beaf2ec2423.tar.gz
+7z.exe a PHOTOS.7z * -pPQ3Rut8QyxghL8lu2UfF
+cd ..
+sdelete.exe -s -r tmp
+```
+Looking through the MFT the only reference I can find to possible PHOTOS.7z is a lnk file under Anit's profile.
+```
+fls -rp -o 1126400 SUSPECT.raw | grep 'PHOTOS.lnk'       
+r/r 171837-128-1:	Users/anit.ghosh/AppData/Roaming/Microsoft/Windows/Recent/PHOTOS.lnk
+```
+Extract the lnk file for analysis.
+```
+icat -o 1126400 SUSPECT.raw 171837-128-1 > PHOTOS.lnk
+```
+Parse the lnk file with lnkparse and we can see this was a lnk to the PHOTOS.7z but the temp folder was sdeleted meaning it is very unlikely we will recover it off the disk so this is a dead end.
+```
+lnkparse PHOTOS.lnk
 
+Windows Shortcut Information:
+   Guid: 00021401-0000-0000-C000-000000000046
+   Link flags: HasTargetIDList | HasLinkInfo | HasRelativePath | HasWorkingDir | IsUnicode | DisableKnownFolderTracking - (2097307)
+   File flags: FILE_ATTRIBUTE_ARCHIVE - (32)
+   Creation time: 2021-02-14 02:21:41.506209+00:00
+   Accessed time: 2021-02-14 02:21:43.076571+00:00
+   Modified time: 2021-02-14 02:21:42.719989+00:00
+   File size: 4154735
+   Icon index: 0
+   Windowstyle: SW_SHOWNORMAL
+   Hotkey: UNSET - UNSET {0x0000}
+
+TARGET:
+      Items:
+      -  Root Folder:
+            Sort index: My Computer
+            Guid: 20D04FE0-3AEA-1069-A2D8-08002B30309D
+      -  Volume Item:
+            Flags: '0xe'
+            Data: null
+      -  File entry:
+            Flags: Is directory
+            File size: 0
+            File attribute flags: 16
+            Primary name: tmp
+      -  File entry:
+            Flags: Is file
+            File size: 4154735
+            File attribute flags: 32
+            Primary name: PHOTOS.7z
+
+   LINK INFO:
+      Link info flags: 1
+      Local base path: C:\Users\anit.ghosh\Desktop\tmp\PHOTOS.7z
+      Common path suffix: ''
+      Location info:
+         Drive type: DRIVE_FIXED
+         Drive serial number: '0x188f1fca'
+         Volume label: ''
+      Location: Local
+```
+If there is nothing on the disk that can help us the next step would be to look at the memory artifacts. This disk image was acquisitioned soon after all these actions were taken so its possible some information could be stored in memory. Unfortunately we were not provided with the memory image but there is a hyberfil.sys file in the Windows root directory that contains a compressed memory stored to a file when the computer goes into hibernation. We can extract this file and use a tool like Hibernation Recon or Hibr2Bin.exe to decompress this file into binary and then analyze it like we would other memory. I transfered the hiberfil.sys file to a Windows computer so I could use the Hibernation Recon tool on it.
+
+Off to a promising start as I am able to successfully run the windows info plugin on the memory.
+```
+vol -f ActiveMemory.bin windows.info.Info
+Volatility 3 Framework 2.7.1
+Progress:  100.00		PDB scanning finished                        
+Variable	Value
+
+Kernel Base	0x82003000
+DTB	0x1a8000
+Symbols	file:///Library/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages/volatility3-2.7.1-py3.11.egg/volatility3/symbols/windows/ntkrpamp.pdb/B7B2FEDFDAD60BCC620C7A49C2A63668-1.json.xz
+Is64Bit	False
+IsPAE	True
+layer_name	0 WindowsIntelPAE
+memory_layer	1 FileLayer
+KdDebuggerDataBlock	0x82289770
+NTBuildLab	17763.1.x86fre.rs5_release.18091
+CSDVersion	0
+KdVersionBlock	0x8228ea48
+Major/Minor	15.17763
+MachineType	332
+KeNumberProcessors	1
+SystemTime	2021-02-14 02:39:19
+NtSystemRoot	C:\Windows
+NtProductType	NtProductWinNt
+NtMajorVersion	10
+NtMinorVersion	0
+PE MajorOperatingSystemVersion	10
+PE MinorOperatingSystemVersion	0
+PE Machine	332
+PE TimeDateStamp	Fri Dec 13 04:20:33 1974
+```
+But trying any other commands does not reveal many results. I am not exactly sure why this is but Volatility will not help us anymore.
+```
+vol -f ActiveMemory.bin windows.pslist.PsList
+Volatility 3 Framework 2.7.1
+Progress:  100.00		PDB scanning finished                        
+PID	PPID	ImageFileName	Offset(V)	Threads	Handles	SessionId	Wow64	CreateTime	ExitTime	File output
+4	0	System	0x86355200	133	-	N/A	False	2021-02-14 02:32:48.000000 	N/A	Disabled
+```
+```
+vol -f ActiveMemory.bin windows.filescan.FileScan
+Volatility 3 Framework 2.7.1
+Progress:  100.00		PDB scanning finished                        
+Offset	Name	Size
+```
+The next step is to run strings of the binary and then grep for any mention of PHOTOS.7z. Just like that we find what is likely the uploaded location of the PHOTOS.7z file. Unfortunately anonfiles has since been shutdown and there is not way to recover this file from the site. One of the cons of doing this challenge three years late.
+```
+strings ActiveMemory.bin | grep PHOTOS.7z | head
+PHOTOS.7z - AnonFilesy
+http://google.com/search?q=https%3A%2F%2Fanonfiles.com%2Fz3jek3J2p3%2FPHOTOS_7z&sourceid=chrome&ie=UTF-8
+https://anonfiles.com/z3jek3J2p3/PHOTOS_7z
+PHOTOS.7z
+PHOTOS.7z
+https://www.google.com/search?q=https%3A%2F%2Fanonfiles.com%2Fz3jek3J2p3%2FPHOTOS_7z&oq=https%3A%2F%2Fanonfiles.com%2Fz3jek3J2p3%2FPHOTOS_7z&aqs=chrome..69i58j69i57&sourceid=chrome&ie=UTF-8
+https://anonfiles.com/z3jek3J2p3/PHOTOS_7z
+https://anonfiles.com/z3jek3J2p3/PHOTOS_7z
+https://anonfiles.com/z3jek3J2p3/PHOTOS_7z
+ttps://anonfiles.com/z3jek3J2p3/PHOTOS_7z
+```
+10. What is the suspect's cryptocurrency address they intended to get reward paid to?
