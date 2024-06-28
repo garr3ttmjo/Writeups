@@ -7,7 +7,7 @@
 Challenge created by Belkasoft and can be found at:
  * https://belkasoft.com/ctf_march/
 
-**Concepts:** Sleuthkit (TSK), Windows Disk Forensics
+**Concepts:** Sleuthkit (TSK), Windows Disk Forensics, Memory Analysis, Bulk Extractor
 
 ## Scenario
 You were contacted by a company preparing their new product launch: an AI-based recommendation system that respects target privacy. Just before the date, the source code and technical documents ended up in their competitor's hands. The company suspects a recently hired developer and obtained a copy of his corporate laptop HDD. You are going to analyze the image and support the suspicion with evidence extracted from the laptop...
@@ -16,10 +16,13 @@ You were contacted by a company preparing their new product launch: an AI-based 
 I am obviously a little late to this challenge but it has been a good learning experience and I have challenged myself to use the Sleuthkit (TSK) framework from the command line as my main analysis tool.
 
 ## Investigation
-We are provided SUSPECT.E01 for the disk image to investigate. I am going to convert it to a raw format because I had some issues parsing the E01 format which ends up with a 43 GB SUSPECT.raw image.
+We are provided SUSPECT.E01 for the disk image to investigate. I am going to convert it to a raw file because I had some issues parsing the E01 format which ends up with a 43 GB SUSPECT.raw image.
 
 For those unfamiliar with The Sleuthkit it was developed by Brian Carrier and is a is a collection of command line tools and a C library that allows you to analyze disk images and recover files from them. It is used behind the scenes in Autopsy and many other open source and commercial forensics tools.
-I will be working from my Mac so I use the Homebrew package manager to install it with the command "brew install sleuthkit"
+
+I will be working from my Mac so I use the Homebrew package manager to install it with the command 
+
+```brew install sleuthkit```
 
 To start off I am going to use the mmls command to take a look at the partion structure of the disk image.
 
@@ -974,7 +977,7 @@ Volatility 3 Framework 2.7.1
 Progress:  100.00		PDB scanning finished                        
 Offset	Name	Size
 ```
-The next step is to run strings of the binary and then grep for any mention of PHOTOS.7z. Just like that we find what is likely the uploaded location of the PHOTOS.7z file. Unfortunately anonfiles has since been shutdown and there is not way to recover this file from the site. One of the cons of doing this challenge three years late.
+The next step is to run strings of the binary and then grep for any mention of PHOTOS.7z. Just like that we find what is likely the uploaded location of the PHOTOS.7z file. Unfortunately anonfiles has since been shutdown and there is not way to recover this file from the site. One of the cons of doing this challenge three years late. I attempted to carve the PHOTOS.7z file from the disk and decompressed binary but 
 ```
 strings ActiveMemory.bin | grep PHOTOS.7z | head
 PHOTOS.7z - AnonFilesy
@@ -989,3 +992,42 @@ https://anonfiles.com/z3jek3J2p3/PHOTOS_7z
 ttps://anonfiles.com/z3jek3J2p3/PHOTOS_7z
 ```
 10. What is the suspect's cryptocurrency address they intended to get reward paid to?
+
+For this question I need the PHOTOS.7z file which is no longer available and I have't been able to find anywhere else.
+
+11. The suspect left an offshore SIM card in their desk drawer. We suggest it might have been used in exfiltrating the leaked data. Please help us confirm that. What are the 2 phone numbers used in this process: one of the suspect and one of their counterparty? Format: +1234567890, +0987654321.
+
+It makes sense that Anit would send the link to the file to their partner so filtering by the upload link we see this string saying "Here it is: https://anonfiles.com/z3jek3J2p3". If we look at the strings above and below we see this whatsapp link which could be what they used to communicate and could contain their phone numbers.
+```
+cat strings_ActiveMemory.txt| grep -Fi -A3 -B3 --color 'Here it is: https://anonfiles.com/z3jek3J2p3' 
+$Z=1/
+p8562097771657@s.whatsapp.net
+3EB0CFE61C765C5F6C9F
+,Here it is: https://anonfiles.com/z3jek3J2p3
+```
+The @s.whatsapp.net structure is similar to an email so its likely bulk_extractor would pick it up.
+```
+bulk_extractor ActiveMemory.bin -o bulk_output
+```
+In the bulk_extractor email histogram file we can see 8562097771657@c.us and 8562099907377@c.us as two heavily repeating numbers that correspond to our suspects.
+```
+head email_histogram.txt 
+# BANNER FILE NOT PROVIDED (-b option)
+# BULK_EXTRACTOR-Version: 2.1.1
+# Feature-Recorder: email
+# Filename: ActiveMemory.bin
+# Histogram-File-Version: 1.1
+n=24	8562097771657@c.us	(utf16=24)
+n=24	false_8562097771657@c.us	(utf16=24)
+n=14	support@tinypass.com
+n=12	pkiadmin@trustcentre.co.za
+n=11	8562099907377@c.us	(utf16=11)
+```
+You can also find this string showing the two numbers were engaged in chat on Feb 13.
+```
++-=? 2021-02-13 21:39:11.037:bin-recv: 600713872a21c2c4.--7,action,msg,relay,chat,8562097771657@c.us,8562099907377@c.us,false_8562097771657@c.us_3A311C04C7766D3671F5,"
+```
+These numbers are a little long for phone numbers but if you take the last 10 digits off you get 856 country code which corresponds to Laos.
+The two numbers are **+8562097771657** and **+8562099907377**.
+
+That completes the challenge. I wish I had been able to complete it the whole way but there was nothing I could do about the PHOTOS.7z file. I'll stay up to date with the future challenges so this isn't an issue. I definitely learned a lot, challenging myself to use the command line as much as possible and learning about tools like bulk_extractor and Hibernation Recon. Hopefully this walkthrough can help other people who are trying to learn how to use The Sleuth Kit framework but just know this only just scratched the surface and there are a lot more tools I didn't touch on. 
