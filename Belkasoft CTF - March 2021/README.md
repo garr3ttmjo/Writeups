@@ -111,9 +111,9 @@ V/V 177408:	$OrphanFiles
 r/r 50-128-1:	hiberfil.sys
 r/r 79301-128-1:	pagefile.sys
 ```
-Viewing the file contents of each partition shows the second one with a starting sector offset of 1126400 is the main volume we will want to be looking at containing user information.
+Viewing the file contents of each partition shows the second one, with a starting sector offset of 1126400, is the main volume we will want to be looking at containing user information.
 
-To navigate through the file system you take can use the icat command to output the contents of the file or you can use the fls command to navigate through the directories. To do this you need to provide the inode to the end of the command. This can be found in the second column of the fls output.
+To analyze the file system you can use the fls command to navigate through the directories and the icat command to output the contents of the file. To do this you need to provide the inode to the end of the command. This can be found in the second column of the fls output.
 
 ## Sleuthkit Examples:
 ```
@@ -170,7 +170,7 @@ tsk_recover -a -o 1126400 -d 855-144-16 SUSPECT.raw adstresser
 Files Recovered: 663
 ```
 ## Timelime and MFT
-Other setup I am going to do before I start looking into the questions is to create a timeline using Sleuthkit and also parse the MFT using the nfts_dfir python tool.
+Other setup I am going to do before I start looking into the questions is to create a timeline using Sleuthkit and parse the MFT using the nfts_dfir python tool.
 
 ### Timeline
 Setting up a timeline can provided valuable high level insight into a users activity as you can see what files were last created, modified, etc.T he issue is there is a lot of data so you need to find ways to narrow it down.
@@ -195,7 +195,7 @@ The mactime command takes in a body file with -b and then parses the body file a
   Mon Dec 31 1979 23:00:00,1765,m...,r/rrwxrwxrwx,0,0,108663-128-4,"/Users/anit.ghosh/AppData/Local/Google/Chrome/User Data/SSLErrorAssistant/7/_metadata/verified_contents.json"
 ```
 ### MFT
-MFT stands for Master File Table and contains records of all of the files within an NTFS volume. Being able to parse this data to find information on the file you are looking for is very valaubleto an investigator.
+MFT stands for Master File Table and contains records of all of the files within an NTFS volume. Being able to parse this data to find information on the file you are looking for is very valauble to an investigator.
 
 I gave the example earlier on how to extract the $MFT file with icat (icat -o 1126400 SUSPECT.raw 0-128-6 > MFT.raw). Now to parse it using the ntfs_parser script from ntfs_dfir. This tool can parse other important ntfs artifacts as well.
 ```
@@ -269,7 +269,7 @@ fls -r -D -o 1126400 SUSPECT.raw 83898-144-6 | grep -v '^\(+\)\{3,\}' | less
   sudo su
   ```
 * AppData Roaming Applications
-  * Thunderbird is an email client meaning some email data might be stored on in the file system
+  * Thunderbird is an email client meaning some email data might be stored on the disk
   ```
    d/d 83910-144-5:      Roaming
       ++ d/d 84335-144-1:     Adobe
@@ -337,7 +337,8 @@ fls -r -D -o 1126400 SUSPECT.raw 83898-144-6 | grep -v '^\(+\)\{3,\}' | less
 ```
 ## Questions
 1. What is the full name of the laptop owner?
-Normally when I want to find out owner I check the version key in the SOFTWARE hive. This shows the RegisteredOwner is User instead of anit.ghosh like I had originally thought. It also shows this is a Windows 10 OS so I was incorrect about this being an older system because of the Documents and Settings folder I saw earlier.
+2. 
+Normally when I want to find out owner I check the version key in the SOFTWARE hive. This shows the RegisteredOwner is 'User' instead of anit.ghosh like I had originally thought. It also shows this is a Windows 10 OS so I was incorrect about this being an older system because of the Documents and Settings folder I saw earlier.
 ```
 ./rip.pl -r ~/Downloads/SUSPECT_Evidence/SOFTWARE.raw -p winver
 Launching winver v.20200525
