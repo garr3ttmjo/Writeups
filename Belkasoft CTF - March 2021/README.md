@@ -978,7 +978,7 @@ Volatility 3 Framework 2.7.1
 Progress:  100.00		PDB scanning finished                        
 Offset	Name	Size
 ```
-The next step is to run strings of the binary and then grep for any mention of PHOTOS.7z. Just like that we find what is likely the uploaded location of the PHOTOS.7z file. Unfortunately anonfiles has since been shutdown and there is not way to recover this file from the site. One of the cons of doing this challenge three years late. I attempted to carve the PHOTOS.7z file from the disk and decompressed binary but 
+The next step is to run strings of the binary and then grep for any mention of PHOTOS.7z. Just like that we find what is likely the uploaded location of the PHOTOS.7z file. Unfortunately anonfiles has since been shutdown and there is not way to recover this file from the site. One of the cons of doing this challenge three years late.
 ```
 strings ActiveMemory.bin | grep PHOTOS.7z | head
 PHOTOS.7z - AnonFilesy
@@ -991,6 +991,13 @@ https://anonfiles.com/z3jek3J2p3/PHOTOS_7z
 https://anonfiles.com/z3jek3J2p3/PHOTOS_7z
 https://anonfiles.com/z3jek3J2p3/PHOTOS_7z
 ttps://anonfiles.com/z3jek3J2p3/PHOTOS_7z
+```
+I attempted to carve the PHOTOS.7z file from the disk and decompressed binary. I used foremost as my data carving tool and added the below entry to the foremost.conf file. This has the magic bytes for a .7z file and helps the tool identify the files to carve. I also recreated the steps in creating the PHOTOS.7z file to get an idea what the size would be which was how I ended up with 78089. The output contain 3 "7z" files but 7z isn't able to recognize them as valid files. So in the end I was just out of luck.
+```
+# 7z File
+#---------------------------------------------------------------------
+      7z  y     78089     \x37\x7a\xbc\xaf\x27\x1c
+#---------------------------------------------------------------------
 ```
 10. What is the suspect's cryptocurrency address they intended to get reward paid to?
 
