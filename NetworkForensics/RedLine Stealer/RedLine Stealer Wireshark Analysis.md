@@ -263,6 +263,25 @@ Kerberos
 6. #### What type of information did this RedLine Stealer try to steal?
 Important files types of .txt, .doc, key, wallet, seed, etc in many application and appdata directories along with crypto wallets and environment variables.
 
+Another method to filter out the noise would be to run an IDS tool like Snort or Suricata against the pcap to see what alerts are triggered.
+
+First update the suricata.yaml with the HOME_NET of 10.7.10.0/24 and run the below command.
+```
+suricata -c /opt/homebrew/etc/suricata/suricata.yaml -l . -r 2023-07-Unit42-Wireshark-quiz.pcap
+```
+Then review the fast.log
+```
+07/10/2023-17:39:48.415597  [**] [1:2033355:1] ET INFO Windows Powershell User-Agent Usage [**] [Classification: Not Suspicious Traffic] [Priority: 3] {TCP} 10.7.10.47:49741 -> 195.161.114.3:80
+07/10/2023-17:39:49.034584  [**] [1:2033355:1] ET INFO Windows Powershell User-Agent Usage [**] [Classification: Not Suspicious Traffic] [Priority: 3] {TCP} 10.7.10.47:49741 -> 195.161.114.3:80
+07/10/2023-17:39:50.423245  [**] [1:2400037:4021] ET DROP Spamhaus DROP Listed Traffic Inbound group 38 [**] [Classification: Misc Attack] [Priority: 2] {TCP} 194.26.135.119:12432 -> 10.7.10.47:49744
+07/10/2023-17:39:50.425364  [**] [1:2043233:6] ET INFO Microsoft net.tcp Connection Initialization Activity [**] [Classification: Potentially Bad Traffic] [Priority: 2] {TCP} 10.7.10.47:49744 -> 194.26.135.119:12432
+07/10/2023-17:39:50.753113  [**] [1:2046045:1] ET MALWARE [ANY.RUN] RedLine Stealer/MetaStealer Family Related (MC-NMF Authorization) [**] [Classification: A Network Trojan was detected] [Priority: 1] {TCP} 10.7.10.47:49744 -> 194.26.135.119:12432
+07/10/2023-17:39:50.753113  [**] [1:2046105:2] ET MALWARE Redline Stealer/MetaStealer Family TCP CnC Activity - MSValue (Outbound) [**] [Classification: A Network Trojan was detected] [Priority: 1] {TCP} 10.7.10.47:49744 -> 194.26.135.119:12432
+07/10/2023-17:39:51.042361  [**] [1:2046105:2] ET MALWARE Redline Stealer/MetaStealer Family TCP CnC Activity - MSValue (Outbound) [**] [Classification: A Network Trojan was detected] [Priority: 1] {TCP} 10.7.10.47:49744 -> 194.26.135.119:12432
+07/10/2023-17:39:56.522573  [**] [1:2046056:2] ET MALWARE Redline Stealer/MetaStealer Family Activity (Response) [**] [Classification: A Network Trojan was detected] [Priority: 1] {TCP} 194.26.135.119:12432 -> 10.7.10.47:49744
+07/10/2023-17:39:56.522573  [**] [1:2046106:2] ET MALWARE Redline Stealer/MetaStealer Family TCP CnC Activity - MSValue (Response) [**] [Classification: A Network Trojan was detected] [Priority: 1] {TCP} 194.26.135.119:12432 -> 10.7.10.47:49744
+```
+
 **That's All Folks**
 
 **You can find more about the RedLine Stealer malware at https://malpedia.caad.fkie.fraunhofer.de/details/win.redline_stealer.**
