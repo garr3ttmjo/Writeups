@@ -160,7 +160,7 @@ This will provide information like Michael's username.
 
 Which can then be looked up at https://www.snapchat.com/add/m_b227468 to view his bitmoji.
 
-![image](https://github.com/user-attachments/assets/18bb705c-eb15-4120-ac1f-6ddd04aec750)
+<img width="397" alt="image" src="https://github.com/user-attachments/assets/110db340-6475-42ba-a50c-f1f616e5ce25">
 
 #### 7. What server was the user interested in making?
 
