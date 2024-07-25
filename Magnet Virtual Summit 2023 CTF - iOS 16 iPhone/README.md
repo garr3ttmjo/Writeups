@@ -1,4 +1,4 @@
-# 
+# Magnet Virtual Summit 2023 CTF - iOS 16 iPhone
 
 **Date:** May 25, 2024
 
@@ -190,10 +190,125 @@ Chrome History
 
 #### 8. What Sports stadium was the user overlooking at Camilien-Houde belvedere?
 
+Scroll through the photos and there is a grouping that seems to be from an outlook looking over the city with maybe a stadium in the background.
+
+For example private/var/mobile/Media/DCIM/100APPLE/IMG_0032.HEIC.
+
+<img width="697" alt="image" src="https://github.com/user-attachments/assets/c5710860-9f52-4031-8b50-eb3d5ed2792a">
+
+Extract the metadata with exiftool and then use the coordinates to get the locations. It laces him in Mount Royal Park right outside Belvédère Camillien-Houde. To the east of this location we can see the Percival Molson Memorial Stadium is within eye distance.
+
+<img width="878" alt="image" src="https://github.com/user-attachments/assets/10d97596-066d-44a1-ae33-ac9b50147ec0">
+
 #### 9. What light-hearted game did the user spend the most time on?
+Application usage is not something iLEAPP parses either so back to manual.
+
+Cellebrite is an industry expert on mobile forensics and here is an article they put out talking about app usage from screen time tracking.
+
+https://cellebrite.com/en/a-look-into-apples-screen-time-feature-and-what-insights-it-lends-to-digital-intelligence/
+
+We can query the RMAdminStore-Local.sqlite db found at private/var/mobile/Library/Application Support/com.apple.remotemanagementd. 
+
+The table contains the data we are looking for so we can do something like
+
+```
+select distinct ZBUNDLEIDENTIFIER, ZTOTALTIMEINSECONDS from ZUSAGETIMEDITEM order by ZTOTALTIMEINSECONDS desc;
+
+ZBUNDLEIDENTIFIER|ZTOTALTIMEINSECONDS
+com.apple.Maps|3600
+com.apple.Maps|875
+com.apple.AppStore|849
+com.apple.AppStore|762
+com.hammerandchisel.discord|707
+com.midasplayer.apps.candycrushsaga|577
+com.google.ios.youtube|562
+com.apple.weather|513
+com.apple.Maps|454
+com.google.photos|424
+com.apple.camera|423
+com.yikyak.2|399
+com.apple.camera|385
+com.reddit.Reddit|368
+com.google.chrome.ios|354
+com.google.Gmail|353
+com.google.chrome.ios|353
+```
+If we go down the list we see the 6th highest application is candy crush at around 10 minutes of usage. You can also look in the Biome AppInFocus report from iLEAPP and search "candy crush" to find it was in focus between 2022-12-23 16:43:19 and 2022-12-23 16:52:56, for about 8 minutes.
 
 #### 10. Which airline lounge was viewed?
 
+The only reference to a lounge I could find was in the Biome User Activity Metadata report from an Apple Maps search for "Lufthansa Senator Lounge in Newark".
+
+<img width="1346" alt="image" src="https://github.com/user-attachments/assets/f2a587e6-80fb-437a-96a1-8b2030b0fed9">
+
+#### 11. Which terms and conditions site on Tik Tok is named after a space formation?
+
+At first I looked in the TikTok app location at private/var/containers/Bundle/Application/DADABF7F-CAA3-4724-8CA4-A1C0434774E8/TikTok.app but after a lot of searching found no results. One thing I thought was weird was that there were no sqlite db for storing any settings or data. I did some research and found there was another locations but associated with bytedance the parent company. The GUID parser I was using had this under musically so I missed it but the location is /private/var/mobile/Containers/Data/Application/4F9E5274-DDB7-422E-8629-234C84D24F4E. 
+
+I run the below command in the directory trying to find an database related to terms and conditions.
+
+```
+find . -type f -name "*.sqlite" -exec grep -H "terms" {} \;        
+Binary file ./Library/AWEStorage/UnifyStorage.sqlite matches
+```
+Then I focus on this UnifyStorage.sqlite file. I use strings and look for mention of the words terms, conditions, and then finally legal and I get a match.
+```
+strings Library/AWEStorage/UnifyStorage.sqlite | grep legal | less
+
+Ghttps://www.tiktok.com/falcon/forest/nebula/common_legal?hide_nav_bar=1_
+4https://www.tiktok.com/falcon/forest/nebula/ad_legal
+```
+
+This url has a nebula directory which is the mentioned space formation.
+
+#### 12. Which cardinal direction was the user turning when driving towards RHEINFAHRE?
+
+Doing an Apple Maps search for RHEINFARHE shows it is a location in Germany.
+
+Location
+-------------
+Rheinfähre
+67583 Guntersblum
+Rhineland-Palatinate
+Germany
+Coordinates
+-------------
+49.80799° N, 8.39196° E
+
+I wrote a python script to extract geolocation data from artifacts like photos and the ZRTCLLOCATIONMO so I could have them mapped out for better visualization. The Rhine River is in Germany so we can narrow it down to the photos in Germany.
+
+<img width="1179" alt="image" src="https://github.com/user-attachments/assets/a4678e30-adff-493e-8670-a6d2caa81f65">
+
+Going through the images there is one photo with a sign directing towards RHEINFARHE or Rhine Ferry.
+
+<img width="671" alt="image" src="https://github.com/user-attachments/assets/a0204847-f46b-4e40-8496-274eee9336e0">
+
+Putting the coordinates from the picture in maps shows they are likely heading down WEINHEIMER STRABE towards Oestrich-Winkel and the river. This would make their direction South with maybe a little East.
+
+<img width="372" alt="image" src="https://github.com/user-attachments/assets/2f57b0fb-1748-4a47-9394-9b2b90c53fbd">
+
+#### 13. The user was trying to learn German through an application, what promotion featuring a rocket was most commonly shown to the user?
+
+Searching through the applications I find that Duolingo is installed. So to search for Duolingo related files
+```
+find . -iname "*duolingo*"
+```
+Promotion makes me think of advertisment or comerical and in the output of this search I see some .mp4 files so I am going to filter for those.
+
+```
+find . -iname "*duolingo*" | grep .mp4
+
+./private/var/mobile/Containers/Data/Application/89A6AE48-C46D-4405-A187-C7FF439873F3/Documents/plus-ad-video/Duolingo_NYPromo_2023_EN.mp4
+./private/var/mobile/Containers/Data/Application/89A6AE48-C46D-4405-A187-C7FF439873F3/Documents/plus-ad-video/Duolingo_FamilyPlan_Super_EN_2.mp4
+./private/var/mobile/Containers/Data/Application/89A6AE48-C46D-4405-A187-C7FF439873F3/Documents/plus-ad-video/Duolingo_NYPromo_2023_VO_EN.mp4
+```
+Open the first .mp4 file for the NYPromo and it is the Duolingo bird on a rocket and its a promo for Super Duolingo for the New Year.
+
+<img width="484" alt="image" src="https://github.com/user-attachments/assets/6d332227-a65d-4281-826d-b49d78391693">
+
+#### 14. At which location did the user travel the most meters according to Apple? (City, Country)
+
+#### 15. What weather front was warned to the user by youtube?
 
 
 
