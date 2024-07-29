@@ -308,7 +308,72 @@ Open the first .mp4 file for the NYPromo and it is the Duolingo bird on a rocket
 
 #### 14. At which location did the user travel the most meters according to Apple? (City, Country)
 
+This is a good article on health activity tracked through Apple Watch https://dfir.pubpub.org/pub/xqvcn3hj/release/1#:~:text=Once%20a%20file%20system%20extraction,sqlite%2C%20healthdb_secure
+
+Distance data can be found in the one of the health related database private/var/mobile/Library/Health/healthdb_secure.sqlite.
+
+Combining the quantity_samples and samples tables, some datetime manipulation to adjust for America/New_York timezone, and then filtering for a sample.data_id = 8 for "Distance Traveled" we can get an accurate picture of the greatest distance in meters traveled by our user. The top record is 662 meters on 2022-12-31.
+
+```
+SELECT 
+    samples.data_id, 
+    quantity_samples.quantity, 
+    datetime(samples.start_date + 978307200 - 18000, 'unixepoch', 'utc') AS "StartTime", 
+    datetime(samples.end_date + 978307200 - 18000, 'unixepoch', 'utc') AS "EndTime" 
+FROM 
+    quantity_samples 
+INNER JOIN 
+    samples 
+ON 
+    samples.data_id = quantity_samples.data_id 
+WHERE 
+    samples.data_type = 8 
+ORDER BY 
+    quantity DESC 
+LIMIT 
+    5;
+
+data_id|quantity|StartTime|EndTime
+1392|662.19000000001|2022-12-31 14:35:18|2022-12-31 14:45:07
+1076|648.190000000005|2022-12-27 13:27:57|2022-12-27 13:37:48
+968|599.979999999997|2022-12-24 08:03:08|2022-12-24 08:13:07
+1398|584.890000000018|2022-12-31 14:45:25|2022-12-31 14:55:24
+1249|576.939999999991|2022-12-29 14:34:28|2022-12-29 14:44:27
+```
+Now we can check the dates of the photos taken to see if any were taken during this timeframe (2022-12-31 14:35:18|2022-12-31 14:45:07) that could provide the geo location data.
+
+We have a match with 
+
+```
+exiftool IMG_0066.HEIC
+
+Create Date                     : 2022:12:31 14:40:47.660+01:00
+Date/Time Original              : 2022:12:31 14:40:47.660+01:00
+Modify Date                     : 2022:12:31 14:40:47+01:00
+GPS Altitude                    : 94.7 m Above Sea Level
+GPS Latitude                    : 50 deg 1' 14.05" N
+GPS Longitude                   : 8 deg 5' 37.87" E
+Circle Of Confusion             : 0.005 mm
+Field Of View                   : 69.4 deg
+Focal Length                    : 4.2 mm (35 mm equivalent: 26.0 mm)
+GPS Position                    : 50 deg 1' 14.05" N, 8 deg 5' 37.87" E
+Hyperfocal Distance             : 2.27 m
+Light Value                     : 12.8
+Lens ID                         : iPhone 12 back dual wide camera 4.2mm f/1.6
+```
+
+Coordinates: 50.02057, 8.09385
+
+The answer is Eltville am Rhein, Germany.
+
 #### 15. What weather front was warned to the user by youtube?
+
+The Biome Notifications Public report parsed by ILEAPP provided a notification from YouTube related to an artic front in Spanish on 2022-12-21.
+
+<img width="548" alt="image" src="https://github.com/user-attachments/assets/09497635-1285-4a03-ab9b-b7bb0c7f3272">
+
+
+
 
 
 
