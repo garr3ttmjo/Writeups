@@ -1,4 +1,4 @@
-# Belkasoft CTF - March 2021
+# Belkasoft Windows CTF - March 2021 
 
 **Date:** June 25th, 2024
 
