@@ -284,7 +284,7 @@ https://phonedb.net/index.php?m=device&id=77&c=psion_teklogix_netbook_pro&d=imag
 	
 #### 26. What websites was the victim accessing?
 	
-Continue scrolling through the file and you see the UA is using Firefox reach out to a host at mobile.msn.com to get to MSN Hotmail.
+Continue scrolling through the file and you see the UA is Firefox, reaching out to a host at mobile.msn.com to get to MSN Hotmail.
 	
 ![image](https://github.com/garr3ttmjo/Writeups/assets/108881417/7ade4f65-5146-45e5-b65d-7d05ebb90b5e)
 
