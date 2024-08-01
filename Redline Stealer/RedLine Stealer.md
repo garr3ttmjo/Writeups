@@ -263,6 +263,8 @@ Kerberos
 6. #### What type of information did this RedLine Stealer try to steal?
 Important files types of .txt, .doc, key, wallet, seed, etc in many application and appdata directories along with crypto wallets and environment variables.
 
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 Another method to filter out the noise would be to run an IDS tool like Snort or Suricata against the pcap to see what alerts are triggered.
 
 First update the suricata.yaml with the HOME_NET of 10.7.10.0/24 and run the below command.
