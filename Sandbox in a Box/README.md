@@ -220,3 +220,13 @@ python capture-py.py C:\Users\Sandbox\AppData\Roaming\ .
 
 ![image](https://github.com/user-attachments/assets/b1493ee2-6078-4517-8648-665c6bac7800)
 
+# Conclusion
+I want to thank jeFF0Falltrades for his videos and challenge. This has been my introduction to malware analysis and he provided a great tutorial on setting up your VM Sandbox as well as walking through how he would analyze different malware types with different tools. Then to top it off a challenge to apply the skills you learned. I say 10/10 and would recommend for everyone to check it out at https://github.com/jeFF0Falltrades/Tutorials/tree/master/master0Fnone_classes/2_Sandbox_in_a_Box.
+
+Here is the Wall of Fame for those who completed the challenge. 
+
+![image](https://github.com/user-attachments/assets/03e10d06-b332-440b-94e6-ba23f1720ca4)
+
+https://github.com/jeFF0Falltrades/Tutorials/blob/master/master0Fnone_classes/2_Sandbox_in_a_Box/crackme/Wall_of_Fame.md
+
+
