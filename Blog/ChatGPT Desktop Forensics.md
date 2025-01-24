@@ -9,11 +9,11 @@ Topic provided by David Cowen at https://www.hecfblog.com/2025/01/daily-blog-723
 ## Challenge
 Determine how to extract chat history out of the Chat GPT desktop app and what other data you can extract that would useful in an investigation (user name, login times, etc..)
 
-## Writeup
+## Analysis
 
 The Windows ChatGPT app is still in demo so you will need to download from the Microsoft Store.
 
-I couldn't find information where the ChatGPT app stores its user files and when I asked ChatGPT it said no user history was stored locally.
+I couldn't find information on where the ChatGPT app stores its user files and ChatGPT says no user history is stored locally.
 
 <img width="758" alt="image" src="https://github.com/user-attachments/assets/dd6e0dc4-9fa3-4b4f-b5c2-a6d1fde11e0c" />
 
@@ -30,7 +30,7 @@ This reveals a base user directory.
 
 ### Chat History
 
-Query history can be found in the IndexedDB/https_chatgpt.com_0.indexeddb.leveldb directory. It contains the structure of a LevelDB database but all the data seems to collect in the .log file.
+Query history can be found in the IndexedDB/https_chatgpt.com_0.indexeddb.leveldb directory. It contains the structure of a LevelDB database but right now the data is collecting in the .log file.
 
 **Path:**
 ```C:\Users\<user>\AppData\Local\Packages\OpenAI.ChatGPT-Desktop_2p2nqsd0c76g0\LocalCache\Roaming\ChatGPT\IndexedDB\https_chatgpt.com_0.indexeddb.leveldb```
