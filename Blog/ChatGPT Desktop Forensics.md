@@ -101,8 +101,7 @@ The most recent session shows:
 ##
 
 ### Summary
-The most important artifacts I have identified are in the base directory of C:\Users\<user>\AppData\Local\Packages\OpenAI.ChatGPT-Desktop_2p2nqsd0c76g0\LocalCache\Roaming\ChatGPT and include the chat history stored in the IndexedDB directory and the session time data stored in the Local Storage directory. This is will provide the user queries and conversations between the user and ChatGPT client and the general times the user was active using the application. I have not been able to tie the user queries to a session time using the sessionID so a detailed timeline of user activity is difficult. I would imagine it is possible but more analysis is required.
-
+The important artifacts I have identified are in the base directory of C:\Users\<user>\AppData\Local\Packages\OpenAI.ChatGPT-Desktop_2p2nqsd0c76g0\LocalCache\Roaming\ChatGPT and include the **chat history** stored in the IndexedDB directory and the **session time data** stored in the Local Storage directory. This is will provide the user queries and conversations between the user and ChatGPT client and the general times the user was active using the application. I have not been able to tie the user queries to a session time using the sessionID so a detailed timeline of user activity is difficult. I would imagine it is possible but more analysis is required.
 
 
 
