@@ -4,7 +4,7 @@
 
 **Author:** Garrett Jones
 
-Topic provided by David Cowen at https://www.hecfblog.com/2025/01/daily-blog-723-sunday-funday-11925.html
+Challenge provided by David Cowen at https://www.hecfblog.com/2025/01/daily-blog-723-sunday-funday-11925.html
 
 ## Challenge
 Determine how to extract chat history out of the Chat GPT desktop app and what other data you can extract that would useful in an investigation (user name, login times, etc..)
