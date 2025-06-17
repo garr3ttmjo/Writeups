@@ -72,9 +72,9 @@ From the output we can see there are 2,500 packets over the course of only 35 se
 
 <img width="946" alt="image" src="https://github.com/user-attachments/assets/3236f7ba-a958-4781-86bc-a1b63ac7432a">
 
-The only thing I see is the 6 http packets that might be worth taking a look at.
+I see 6 http packets that might be worth taking a look at.
 
-Now I will start looking at the DNS to see if we can find any suspicious domains. Filtering for ```dns``` I see a lot of traffic containing "coolweathercoat.com". To try to understand more about this domain I am going to filter for anything containing that string with ```frame contains "coolweathercoat.com"```.
+Lets look at the DNS to see if we can find any suspicious domains. Filtering for ```dns``` I see a lot of traffic containing "coolweathercoat.com". To try to understand more about this domain I am going to filter for anything containing that string with ```frame contains "coolweathercoat.com"```.
 Looking through I see Kerberos and CLDAP protocols which leads me to believe that coolweathercoat.com is the domain/network we are looking at. So to remove some of the noise lets go back to dns but remove anything with our home domain with ```dns && !(frame contains "coolweathercoat")```.
 
 <img width="1542" alt="image" src="https://github.com/user-attachments/assets/3bbf1a9b-5381-4ade-a0bf-00475ff8caea">
@@ -180,7 +180,7 @@ This one appears to be lisitng all of the directories it wants to search and fil
 
 <img width="382" alt="image" src="https://github.com/user-attachments/assets/c3c4a8b0-b76a-4033-9678-4f128f2f8aae">
 
-This one looks like crypto wallets and maybe addresses to collect.
+This one looks like crypto wallets and addresses.
 
 <img width="1657" alt="image" src="https://github.com/user-attachments/assets/19a55054-8e3d-4f65-9df5-0cda7b810705">
 
