@@ -105,16 +105,16 @@ The DACookbook.txt is not present in the folder after the executable finishes so
 
 ## 1. What string, starting with the prefix "flag_", is found when running crackme.exe? (include "flag_" when entering your answer)
 
-A tool we can use to view a process strings in memory is System Informer. Right click on the process you are investigating then choose properties, Memory, Options, Strings, then choose you minimum string length and areas of memory you want to search.
+A tool we can use to view a process strings in memory is System Informer. Right click on the process you are investigating then choose Properties -> Memory -> Options -> Strings and choose the minimum string length and areas of memory to search.
 
-I suspended the process to give me the chance to search, then filtered for the flag_ string and it was the top result.
+I suspended the process to get the chance to search, then filtered for the flag_ string and it was the top result.
 
 ![image](https://github.com/user-attachments/assets/7445d852-2449-4c71-9994-c33770d76a03)
 
 
 ## 2. What is the full path of the file that crackme.exe attempts to access? (This *is* case-sensitive and is NOT the same file it *writes* to disk)
 
-This we identified in during our procmon analysis, Filezilla.xml. This file is not found in the normal operations of an executable. Filezilla is a FTP (File Transfer Protocol) application and Filezilla.xml contains configuration settings for the application. This malware was likely checking the xml file to retrieve some information like user, server name, etc.
+THis was identified in our procmon analysis, Filezilla.xml. This file is not found in the normal operations of an executable. Filezilla is a FTP (File Transfer Protocol) application and Filezilla.xml contains configuration settings for the application. This malware was likely checking the xml file to retrieve some information like user, server name, etc.
 
 ## 3. crackme.exe uses a suspicious library...how big is this DLL in bytes? (this is the file *size* NOT the *size on disk* - just type the number of bytes, not the word "bytes")
 
