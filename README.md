@@ -6,6 +6,16 @@ A collection of my digital forensics investigations, CTF challenges, and inciden
 - **GCFE (GIAC Certified Forensic Examiner)**  
 - **CFCE (Certified Forensic Computer Examiner – IACIS)**
 
+## Featured Cases
+### The Stolen Szechuan Sauce
+Full incident report with structured forensic methodology
+
+### Redline Stealer
+Malware analysis with network traffic (PCAP). Focus on C2 communication and behavior.
+
+### iOS 16 iPhone CTF
+Mobile forensics challenge from Magnet Summit. Analysis of iOS artifacts and user activity.
+
 ## Repository Structure
 ```
 .
@@ -54,16 +64,6 @@ A collection of my digital forensics investigations, CTF challenges, and inciden
 * Timeline Reconstruction
 * Log Analysis
 * Technical Report Writing
-
-## Featured Cases
-### The Stolen Szechuan Sauce
-Full incident report with structured forensic methodology
-
-### Redline Stealer
-Malware analysis with network traffic (PCAP). Focus on C2 communication and behavior.
-
-### iOS 16 iPhone CTF
-Mobile forensics challenge from Magnet Summit. Analysis of iOS artifacts and user activity.
 
 ## Contact
 LinkedIn: https://www.linkedin.com/in/garrett-jones-073649137/
