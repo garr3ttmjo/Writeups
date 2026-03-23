@@ -264,7 +264,7 @@ Using the TSK command icat I can parse out the contents of the corresponding $I 
 icat -o 206848 cfreds_2015_data_leakage_pc.dd 74761-128-1
 C:\Users\informant\AppData\Local\Microsoft\Windows\Burn\Burn\IE11-Windows6.1-x64-en-us.exe
 ```
-This shows that Internet Explorer was moved to this Burn path and then later deleted. The AppData\Local\Microsoft\Windows\Burn\Burn\ folder is assocaited with the Windows Disc Burning utility so as part of a data exfiltration case we will want to look more into this.
+This shows that Internet Explorer was moved to this Burn path and then later deleted. The AppData\Local\Microsoft\Windows\Burn\Burn\ folder is associated with the Windows Disc Burning utility so as part of a data exfiltration case we will want to look more into this.
 
 Another way to check for installed programs is to check the Uninstall key in both SOFTWARE and NTUSER.DAT hives.
 ```
@@ -290,52 +290,6 @@ Microsoft\Windows\CurrentVersion\Uninstall
   MPlayer2
 2015-03-23 20:00:58Z
   Bonjour v.3.0.0.10
-2015-03-22 15:04:14Z
-  Microsoft Office Professional Plus 2013 v.15.0.4420.1017
-2015-03-22 15:03:33Z
-  Microsoft Office Professional Plus 2013 v.15.0.4420.1017
-2015-03-22 15:01:46Z
-  Microsoft Office 32-bit Components 2013 v.15.0.4420.1017
-2015-03-22 15:01:38Z
-  Microsoft Word MUI (English) 2013 v.15.0.4420.1017
-2015-03-22 15:01:37Z
-  Microsoft Outlook MUI (English) 2013 v.15.0.4420.1017
-2015-03-22 15:01:34Z
-  Microsoft Office OSM MUI (English) 2013 v.15.0.4420.1017
-  Microsoft Office OSM UX MUI (English) 2013 v.15.0.4420.1017
-2015-03-22 15:01:32Z
-  Microsoft Office Proofing (English) 2013 v.15.0.4420.1017
-2015-03-22 15:01:31Z
-  Microsoft Office Proofing Tools 2013 - English v.15.0.4420.1017
-2015-03-22 15:01:30Z
-  Outils de v├⌐rification linguistique 2013 de Microsoft Office┬á- Fran├ºais v.15.0.4420.1017
-2015-03-22 15:01:14Z
-  Microsoft Office Proofing Tools 2013 - Espanol v.15.0.4420.1017
-2015-03-22 15:01:13Z
-  Microsoft OneNote MUI (English) 2013 v.15.0.4420.1017
-2015-03-22 15:01:12Z
-  Microsoft Groove MUI (English) 2013 v.15.0.4420.1017
-2015-03-22 15:01:11Z
-  Microsoft DCF MUI (English) 2013 v.15.0.4420.1017
-2015-03-22 15:01:10Z
-  Microsoft Publisher MUI (English) 2013 v.15.0.4420.1017
-2015-03-22 15:01:09Z
-  Microsoft PowerPoint MUI (English) 2013 v.15.0.4420.1017
-2015-03-22 15:01:07Z
-  Microsoft Excel MUI (English) 2013 v.15.0.4420.1017
-2015-03-22 15:01:05Z
-  Microsoft Lync MUI (English) 2013 v.15.0.4420.1017
-2015-03-22 15:01:04Z
-  Microsoft Office Shared 32-bit MUI (English) 2013 v.15.0.4420.1017
-2015-03-22 15:01:03Z
-  Microsoft InfoPath MUI (English) 2013 v.15.0.4420.1017
-2015-03-22 15:01:02Z
-  Microsoft Access MUI (English) 2013 v.15.0.4420.1017
-  Microsoft Access Setup Metadata MUI (English) 2013 v.15.0.4420.1017
-2015-03-22 15:01:01Z
-  Microsoft Office Shared Setup Metadata MUI (English) 2013 v.15.0.4420.1017
-2015-03-22 15:00:59Z
-  Microsoft Office Shared MUI (English) 2013 v.15.0.4420.1017
 
 Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall
 2015-03-23 20:02:46Z
@@ -624,15 +578,135 @@ Shutdown / Turn on Information from System Event Log
 | 3/25/2015 3:31:00 PM | 3/25/2015 11:31:00 AM | 6006    | System  | informant-PC | The Event log service was stopped | Computer: informant-PC |
 ```
 
-1. What web browsers were used?
-1. Identify directory/file paths related to the web browser history.
-1. What websites were the suspect accessing? (Timestamp, URL...)
-1. List all search keywords using web browsers. (Timestamp, URL, keyword...)
-1. List all user keywords at the search bar in Windows Explorer. (Timestamp, Keyword)
-1. What application was used for e-mail communication?
-1. Where is the e-mail file located?
-1. What was the e-mail account used by the suspect?
-1. List all e-mails of the suspect. If possible, identify deleted e-mails. (You can identify the following items: Timestamp, From, To, Subject, Body, and Attachment) [Hint: just examine the OST file only.]
+14. What web browsers were used?
+- Google Chrome
+- Microsoft Edge
+
+15. Identify directory/file paths related to the web browser history.
+
+| Browser | Path                                                                     |
+|---------|--------------------------------------------------------------------------|
+| Edge    | Users\informant\AppData\Local\Microsoft\Windows\WebCache\WebCacheV01.dat |
+| Chrome  | Users\informant\AppData\Local\Google\Chrome\User Data\Default\History    |
+
+16. What websites were the suspect accessing? (Timestamp, URL...)
+
+| Type | File / Resource | Full Path / URL | Visit Time |
+|------|----------------|----------------|-----------|
+| Web | data leakage methods | https://www.google.com/webhp?hl=en#hl=en&q=data+leakage+methods | 3/23/2015 18:02 |
+| Web | leaking confidential information | https://www.google.com/webhp?hl=en#hl=en&q=leaking+confidential+information | 3/23/2015 18:02 |
+| Web | information leakage cases | https://www.google.com/webhp?hl=en#hl=en&q=information+leakage+cases | 3/23/2015 18:03 |
+| Web | Top 5 sources leaking personal data | http://www.emirates247.com/business/technology/top-5-sources-leaking-personal-data-2015-03-13-1.584027 | 3/23/2015 18:04 |
+| Web | Google Data Leakage Case Settlement | http://www.mediapost.com/publications/article/205047/google-to-settle-data-leakage-case-for-85-mill.html | 3/23/2015 18:05 |
+| Web | intellectual property theft | https://www.google.com/search?q=intellectual+property+theft | 3/23/2015 18:05 |
+| Web | FBI Intellectual Property Theft | http://www.fbi.gov/about-us/investigate/white_collar/ipr/ipr | 3/23/2015 18:05 |
+| Web | Intellectual Property | http://en.wikipedia.org/wiki/Intellectual_property | 3/23/2015 18:06 |
+| Web | cloud storage | https://www.google.com/search?q=cloud+storage | 3/23/2015 18:06 |
+| Web | Cloud Storage | http://en.wikipedia.org/wiki/Cloud_storage | 3/23/2015 18:15 |
+| Web | Best Cloud Storage Services | http://www.pcadvisor.co.uk/test-centre/internet/3506734/best-cloud-storage-dropbox-google-drive-onedrive-icloud/ | 3/23/2015 18:15 |
+| Web | digital forensics | https://www.google.com/search?q=digital+forensics | 3/23/2015 18:15 |
+| Web | Digital Forensics | http://en.wikipedia.org/wiki/Digital_forensics | 3/23/2015 18:15 |
+| Web | Digital Evidence and Forensics | http://nij.gov/topics/forensics/evidence/digital/pages/welcome.aspx | 3/23/2015 18:16 |
+| Web | how to delete data | https://www.google.com/search?q=how+to+delete+data | 3/23/2015 18:16 |
+| Web | anti-forensics | https://www.google.com/search?q=anti-forensics | 3/23/2015 18:16 |
+| Web | Anti-Forensic Techniques | http://forensicswiki.org/wiki/Anti-forensic_techniques | 3/23/2015 18:17 |
+| Web | data recovery tools | https://www.google.com/search?q=data+recovery+tools | 3/23/2015 18:18 |
+| Web | Data Recovery Software | http://en.wikipedia.org/wiki/List_of_data_recovery_software | 3/23/2015 18:19 |
+| Web | Data Recovery Tools | http://www.forensicswiki.org/wiki/Tools:Data_Recovery | 3/23/2015 18:19 |
+| Web | iCloud | https://www.apple.com/icloud/ | 3/23/2015 19:47 |
+| Web | google drive | https://www.google.com/webhp?hl=en#hl=en&q=google+drive | 3/23/2015 19:55 |
+| Web | Google Drive | https://www.google.com/drive/ | 3/23/2015 19:56 |
+| Web | Download Google Drive | https://tools.google.com/dlpage/drive/thankyou.html?hl=en | 3/23/2015 19:56 |
+| Web | Google Login | https://accounts.google.com/ServiceLoginAuth | 3/23/2015 19:56 |
+| Web | Eraser Tool | http://eraser.heidi.ie/download.php | 3/24/2015 21:06 |
+| Web | Eraser Download | http://sourceforge.net/projects/eraser/files/Eraser%206/6.2/Eraser%206.2.0.2962.exe/download | 3/25/2015 14:47 |
+| Local File | proposal.docx | file:///E:/RM#1/Secret%20Project%20Data/proposal/[secret_project]_proposal.docx | 3/23/2015 18:19 |
+| Local File | design_concept.ppt | file:///E:/RM#1/Secret%20Project%20Data/design/[secret_project]_design_concept.ppt | 3/23/2015 18:37 |
+| Network Share | pricing_decision.xlsx | file://10.11.11.128/secured_drive/Secret%20Project%20Data/pricing%20decision/(secret_project)_pricing_decision.xlsx | 3/23/2015 19:56 |
+| Local File | final_meeting.pptx | file:///V:/Secret%20Project%20Data/final/[secret_project]_final_meeting.pptx | 3/23/2015 20:04 |
+| Local File | winter_whether_advisory.zip | file:///E:/Secret%20Project%20Data/design/winter_whether_advisory.zip | 3/23/2015 20:56 |
+| Local File | winter_whether_advisory.zip | file:///D:/de/winter_whether_advisory.zip | 3/24/2015 19:33 |
+| Local File | Penguins.jpg | file:///D:/Penguins.jpg | 3/24/2015 19:33 |
+| Local File | Koala.jpg | file:///D:/Koala.jpg | 3/24/2015 20:44 |
+| Local File | Tulips.jpg | file:///D:/Tulips.jpg | 3/24/2015 21:01 |
+| Local File | temp file | file:///C:/Users/informant/AppData/Local/Temp/nsvE0EF.tmp/g/gtb/toolbar.html | 3/25/2015 14:47 |
+| Local File | Resignation_Letter.xps | file:///C:/Users/informant/Desktop/Resignation_Letter_(Iaman_Informant).xps | 3/25/2015 14:48 |
+| Local File | Resignation_Letter.docx | file:///C:/Users/informant/Desktop/Resignation_Letter_(Iaman_Informant).docx | 3/25/2015 14:48 |
+                                                                                                       
+17. List all search keywords using web browsers. (Timestamp, URL, keyword...)
+
+| Timestamp | URL | Search Keyword |
+|-----------|-----|----------------|
+| 3/23/2015 18:02 | https://www.google.com/webhp?hl=en#hl=en&q=data+leakage+methods | data leakage methods |
+| 3/23/2015 18:02 | https://www.google.com/webhp?hl=en#hl=en&q=leaking+confidential+information | leaking confidential information |
+| 3/23/2015 18:03 | https://www.google.com/webhp?hl=en#hl=en&q=information+leakage+cases | information leakage cases |
+| 3/23/2015 18:05 | https://www.google.com/search?q=information+leakage+cases | information leakage cases |
+| 3/23/2015 18:05 | https://www.google.com/search?q=intellectual+property+theft | intellectual property theft |
+| 3/23/2015 18:06 | https://www.google.com/search?q=how+to+leak+a+secret | how to leak a secret |
+| 3/23/2015 18:06 | https://www.google.com/search?q=cloud+storage | cloud storage |
+| 3/23/2015 18:15 | https://www.google.com/search?q=digital+forensics | digital forensics |
+| 3/23/2015 18:16 | https://www.google.com/search?q=how+to+delete+data | how to delete data |
+| 3/23/2015 18:16 | https://www.google.com/search?q=anti-forensics | anti-forensics |
+| 3/23/2015 18:18 | https://www.google.com/search?q=data+recovery+tools | data recovery tools |
+| 3/23/2015 19:55 | https://www.google.com/webhp?hl=en#hl=en&q=google+drive | google drive |
+
+18. List all user keywords at the search bar in Windows Explorer. (Timestamp, Keyword)
+```
+rip.exe -r "D:\Cases\NIST\Data Leakage Case\Kape Triage\G\Users\informant\NTUSER.DAT" -p wordwheelquery
+Launching wordwheelquery v.20200823
+wordwheelquery v.20200823
+(NTUSER.DAT) Gets contents of user's WordWheelQuery key
+
+Software\Microsoft\Windows\CurrentVersion\Explorer\WordWheelQuery
+LastWrite Time 2015-03-23 18:40:17Z
+
+Searches listed in MRUListEx order
+
+0    secret
+
+rip.exe -r "D:\Cases\NIST\Data Leakage Case\Kape Triage\G\Users\informant\NTUSER.DAT" -p typedpaths
+Launching typedpaths v.20200526
+typedpaths v.20200526
+(NTUSER.DAT) Gets contents of user's typedpaths key
+
+Software\Microsoft\Windows\CurrentVersion\Explorer\TypedPaths
+LastWrite Time 2015-03-22 15:08:42Z
+
+Software\Microsoft\Windows\CurrentVersion\Explorer\TypedPaths has no values.
+```
+
+19. What application was used for e-mail communication?
+
+Outlook
+
+20. Where is the e-mail file located?
+```
+Users\informant\AppData\Local\Microsoft\Outlook\iaman.informant@nist.gov.ost
+```
+
+21. What was the e-mail account used by the suspect?
+```
+iaman.informant@nist.gov
+```
+
+22. List all e-mails of the suspect. If possible, identify deleted e-mails. (You can identify the following items: Timestamp, From, To, Subject, Body, and Attachment) [Hint: just examine the OST file only.]
+
+
+| Timestamp | From | To | Subject | Body (Full Text) | Attachments | Deleted |
+|----------|------|----|---------|------------------|-------------|---------|
+| 2015-03-23 17:29 | spy | iaman | Hello, Iaman | How are you doing? | None | No |
+| 2015-03-23 18:44 | iaman | spy | RE: Hello, Iaman | Successfully secured. | None | No |
+| 2015-03-23 19:15 | spy | iaman | Good job, buddy. | Good, job.<br>I need a more detailed data about this business. | None | No |
+| 2015-03-23 19:20 | iaman | spy | RE: Good job, buddy. | Okay, I got it.<br>I’ll be in touch.<br><br>This is a sample. | None | No |
+| 2015-03-23 19:26 | spy | iaman | Important request | I confirmed it.<br>But, I need a more data.<br>Do your best. | None | No |
+| 2015-03-23 19:27 | iaman | spy | RE: Important request | Umm….. I need time to think. | None | No |
+| 2015-03-23 20:41 | spy | iaman | RE: It's me | I got it.<br><br>Use links below:<br><br>https://drive.google.com/file/d/0Bz0ye6gXtiZaVl8yVU5mWHlGbWc/view?usp=sharing<br><br>https://drive.google.com/file/d/0Bz0ye6gXtiZaakx6d3R3c0JmM1U/view?usp=sharing | Google Drive links | Yes |
+| 2015-03-24 13:25 | spy | iaman | Last request | This is the last request.<br>I want to get the remaining data. | None | No |
+| 2015-03-24 13:35 | iaman | spy | RE: Last request | This is the last time..<br><br>No problem.<br>U can directly deliver storage devices that stored it.<br><br>Stop it!<br>It is very hard to transfer all data over the internet! | None | Yes |
+| 2015-03-24 19:34 | iaman | spy | RE: Watch out! | I am trying.<br><br>-----Original Message-----<br>From: spy<br>Subject: Watch out!<br><br>USB device may be easily detected.<br>So, try another method. | None | Yes |
+| 2015-03-24 21:05 | iaman | spy | Done | It’s done. See you tomorrow. | None | Yes |
+
+
 1. List external storage devices attached to PC.
 1. Identify all traces related to ‘renaming’ of files in Windows Desktop. (It should be considered only during a date range between 2015-03-23 and 2015-03-24.)[Hint: the parent directories of renamed files were deleted and their MFT entries were also overwritten. Therefore, you may not be able to find their full paths.]
 1. What is the IP address of company’s shared network drive?
