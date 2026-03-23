@@ -2,6 +2,10 @@
 
 A collection of my digital forensics investigations, CTF challenges, and incident response case studies. These writeups demonstrate my methodology, tooling, and analytical approach to solving forensic problems.
 
+## Certifications
+- **GCFE (GIAC Certified Forensic Examiner)**  
+- **CFCE (Certified Forensic Computer Examiner – IACIS)**
+
 ## Repository Structure
 ```
 .
