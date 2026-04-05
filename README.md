@@ -23,6 +23,7 @@ Mobile forensics challenge from Magnet Summit. Analysis of iOS artifacts and use
 │   └── README.md
 ├── Blog
 │   └── ChatGPT Desktop Forensics.md
+│ 	└── Malicious Powershell Analysis.md
 ├── Data Leakage Case (In Progress)
 │   └── README.md
 ├── iOS 16 iPhone - Magnet Virtual Summit 2023 CTF
